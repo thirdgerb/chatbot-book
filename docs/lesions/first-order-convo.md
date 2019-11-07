@@ -442,3 +442,6 @@ CommuneChatbot 提供了 BuildTalk 的链式调用, 能让您非常优雅地描�
 * ```Commune\Chatbot\OOHost\Context\Stages\OnCallbackStage```
 
 如果您有很好的 IDE 支持, 可以放心使用这种方式来定义 stage. 它反而能让您的代码更严谨.
+
+
+## [下一课 : 定义 N 阶多轮对话](/docs/lesions/n-order-convo.md)

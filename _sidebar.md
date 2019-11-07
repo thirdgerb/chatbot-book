@@ -1,8 +1,7 @@
 
 * [首页](/)
-    *   [更新记录](/docs/prelogue/releases.md)
-    *   [开发计划](/docs/prelogue/developing.md)
 * [快速启动](/docs/setup.md)
+* [新手教程 ★](/docs/lesions/index.md)
 * [核心概念](/docs/core-concepts/index.md)
     *   [对话机器人应用](/docs/core-concepts/chatbot-app.md)
     *   [对话机器人架构](/docs/core-concepts/structure.md)
@@ -10,7 +9,6 @@
     *   [工程化还是机器人学习](/docs/core-concepts/engeering-or-machine-learning.md)
     *   [自然语言单元](/docs/core-concepts/nlu.md)
     *   [多模态交互]()
-* [新手教程](/docs/lesions/index.md)
 * [工程模块]()
     *   请求生命周期
     *   IoC 容器与依赖注入

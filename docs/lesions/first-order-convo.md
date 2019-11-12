@@ -208,9 +208,8 @@ CommuneChatbot 项目自带多种生成 callable 对象的常用工具, 都在 `
 
 然后运行 ```php demo/console.php firstOrder``` 查看效果.
 
-您可能注意到, ```step1``` 这次不是用 ```__on``` 前缀来标记的, 而是用了一个注解 ``` @stage ``` 来标记它.
-
-CommuneChatbot 有很多注解的使用办法, 在后面会介绍. 但标记 Stage 建议还是用 ```__on``` 前缀, 因为这种做法可读性更好, 不会和其它的方法名混在一起, 难以辨别.
+>您可能注意到, ```step1``` 这次不是用 ```__on``` 前缀来标记的, 而是用了一个注解 ``` @stage ``` 来标记它.
+>CommuneChatbot 有很多注解的使用办法, 在后面会介绍. 但标记 Stage 建议还是用 ```__on``` 前缀, 因为这种做法可读性更好, 不会和其它的方法名混在一起, 难以辨别.
 
 
 ## 定义有分支的多轮对话
@@ -444,4 +443,4 @@ CommuneChatbot 提供了 BuildTalk 的链式调用, 能让您非常优雅地描�
 如果您有很好的 IDE 支持, 可以放心使用这种方式来定义 stage. 它反而能让您的代码更严谨.
 
 
-## [下一课 : 定义 N 阶多轮对话](/docs/lesions/n-order-convo.md)
+## [下一课 : 填槽型多轮对话](/docs/lesions/slot-filling.md)

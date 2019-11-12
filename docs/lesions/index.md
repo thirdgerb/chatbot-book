@@ -6,8 +6,11 @@
 * [第一课 : hello world](/docs/lesions/helloworld.md)
 * [第二课 : 定义单轮对话](/docs/lesions/single-turn-convo.md)
 * [第三课 : 定义一阶多轮对话](/docs/lesions/first-order-convo.md)
-* [第四课 : 定义N阶多轮对话](/docs/lesions/n-order-convo.md)
-* 第五课 : 上下文记忆
-* 第六课 : sleep & fallback
-* 第七课 : stage builder
-* 第八课 : 会话嵌套
+* [第四课 : 填槽型多轮对话](/docs/lesions/slot-filling.md)
+* [第五课 : 定义依赖关系的 N 阶多轮对话](/docs/lesions/n-order-convo.md)
+* [第六课 : 定义不相依赖的 N 阶多轮对话](/docs/lesions/n-thread-convo.md)
+* [第七课 : 定义多重会话嵌套]
+* [第八课 : 意图与上下文记忆]
+
+
+更多内容, 还需要查看其它的文档.

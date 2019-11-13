@@ -99,34 +99,7 @@ class UserMenu extends OOContext
     }
 
     public function __onMaze(Stage $stage) : Navigator
-    {public function __onStart(Stage $stage): Navigator
-         {
-             $menu = (new Menu(
-                     '您好, %name%, 请选择您需要的操作:',
-                     [
-                         // 直接用语境作为值, 会自动调用该语境的 desc
-                         MazeInt::class,
-
-                         // 用 stage 名称作为值
-                         '迷宫' => 'maze',
-
-                         // 用闭包作为值
-                         '返回' => Redirector::goCancel()
-                     ]
-
-                 ))
-                 ->withSlots(['name' => $this->user->name])
-                 ->onHearing(function(Hearing $hearing) {
-                     $hearing->defaultFallback(function(Dialog $dialog){
-                         $dialog->say()->warning('对不起, 您的选项不存在');
-                         // 重复语境
-                         return $dialog->repeat();
-                     });
-                 });
-
-             return $stage->component($menu);
-         }
-
+    {
         // 通过 sleep to, 进入到迷宫游戏
         return $stage->sleepTo(
             MazeInt::getContextName(),

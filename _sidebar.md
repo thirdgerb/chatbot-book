@@ -21,8 +21,8 @@
     * [第十课 : 渲染回复]
 * [工程模块]()
     *   请求生命周期
-    *   IoC 容器与依赖注入
-    *   配置体系
+    *   [配置体系](/docs/engineer/configuration.md)
+    *   [双容器与依赖注入](/docs/engineer/di.md)
     *   Messages
     *   Conversation
     *   平台适配
@@ -41,25 +41,19 @@
     *   Session
     *   Commands
     *   Corpus
-* [使用NLU]()
-* [创建应用]()
-    *   Hyperf Command
+* [Hyperf 工作站]()
+    *   工作站原理
     *   微信公众号Bot
     *   百度智能音箱Bot
-    *   运维机器人
-    *   Web版
-    *   Api版
+    *   Web + Api 版
     *   自定义开发
     *   多模态中控
-* 深入了解
-    *   swoole server
-    *   hyperf 协程客户端
-* [开放组件]()
+* [使用NLU]()
+* [创建应用]()
+* [组件化]()
+    *   [定义组件](/docs/components/component-option.md)
     *   NLU 管理工具
     *   文字游戏
     *   SimpleWiki
     *   SimpleChat
-* [相关文章]()
-  * [关于对话机器人]()
-  * 双容器策略
 

@@ -175,7 +175,9 @@ return [
 
 ### 4.1 通过依赖注入
 
-CommuneChatbot 有四个环节实现了依赖注入:
+CommuneChatbot 有以下环节实现了依赖注入:
+
+__ServiceProvider__ : 以类名方式注册的```ServiceProvider```, 构造方法都实现了依赖注入.
 
 __管道__ : 关于管道, 详情见[管道的文档](/docs/engineer/pipeline.md). 系统级的```ChatPipe```, 和对话管理层的```SessionPipe``` 都对构造器 ```__construct``` 方法实现了依赖注入.
 
@@ -194,7 +196,7 @@ class MessengerPipe implements InitialPipe
     }
 ```
 
-__事件__ : 关于事件, 详情见[事件的文档](/docs/engineer/dispatcher.md). 所有事件的```listener```的构造器```__construct```方法都实现了依赖注入.
+__事件__ : 关于事件, 详情见[事件的文档](/docs/engineer/dispatcher.md). 所有事件的```listener```的构造方法都实现了依赖注入.
 
 __命令__ : 关于命令, 详情见[命令的文档](/docs/dialogue/command.md). 所有命令的构造器```__construct```方法都实现了依赖注入.
 
@@ -203,8 +205,22 @@ __Stage中的callable对象__ : 定义```Stage```过程中的```callable```对�
 * function 名称 : 对入参进行依赖注入
 * 可执行的object : 对```__invoke```方法进行依赖注入
 * 闭包 : 对参数进行依赖注入
-* 数组形式的静态方法 : 对方法进行依赖注入
+* array(类名, 静态方法名) : 对方法进行依赖注入
 * array(类名, 动态方法名) : 对类的构造器进行依赖注入, 对执行方法也进行依赖注入
+* array($object, 动态方法名) : 对执行方法进行依赖注入
+
+例如 :
+
+```php
+    public function __onStart(Stage $stage) : Navigator
+    {
+        return $stage->talk(
+            // 依赖注入
+            function(Dialog $dialog, Corpus $corpus) {...},
+            function(Dialog $dialog, NLU $nlu) {...}
+        );
+    }
+```
 
 ### 4.2 通过容器获取
 
@@ -262,7 +278,6 @@ __Stage中的callable对象__ : 定义```Stage```过程中的```callable```对�
 |interface                                              | 简介 |
 |-                                                      |- |
 |Commune\Chatbot\Blueprint\Conversation\Conversation    |管理请求所有数据的容器|
-|Commune\Chatbot\Blueprint\Conversation\ConversationContainer    |与上相同|
 |Commune\Chatbot\Blueprint\Conversation\MessageRequest  |对请求的封装, 负责转义|
 |Commune\Chatbot\Blueprint\Conversation\ConversationLogger |请求级的日志模块|
 |Commune\Chatbot\Contracts\CacheAdapter                 |系统默认的缓存模块 |

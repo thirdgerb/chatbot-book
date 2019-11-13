@@ -21,12 +21,13 @@
     * [第十课 : 渲染回复]
 * [工程模块]()
     *   请求生命周期
-    *   [配置体系](/docs/engineer/configuration.md)
     *   [双容器与依赖注入](/docs/engineer/di.md)
+    *   [配置体系](/docs/engineer/configuration.md)
+    *   [配置中心抽象层](/docs/engineer/abstract-config.md)
+    *   平台适配
     *   Messages
     *   Conversation
-    *   平台适配
-    *   管道
+    *   [管道](/docs/engineer/pipeline.md)
     *   渲染回复
     *   事件机制
     *   更多工具类

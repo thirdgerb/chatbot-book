@@ -19,42 +19,37 @@
     * [第八课 : 意图与上下文记忆]
     * [第九课 : 定义多轮对话组件]
     * [第十课 : 渲染回复]
-* [工程模块]()
-    *   请求生命周期
+* [工程模块](/docs/engineer/engineer.md)
+    *   [应用生命周期](/docs/engineer/app-lifecircle.md)
     *   [双容器与依赖注入](/docs/engineer/di.md)
     *   [配置体系](/docs/engineer/configuration.md)
     *   [配置中心抽象层](/docs/engineer/abstract-config.md)
-    *   平台适配
-    *   Messages
-    *   Conversation
+    *   [Conversation](/docs/engineer/conversation.md)
+    *   [消息体系](/docs/engineer/messages.md)
+    *   [回复渲染]()
+    *   [多平台适配](/docs/engineer/platform-adpater.md)
     *   [管道](/docs/engineer/pipeline.md)
-    *   渲染回复
-    *   事件机制
-    *   更多工具类
-* 对话管理模块
-    *   Context
-    *   Stage
-    *   Intent
-    *   Memory
-    *   Dialog
-    *   QA
-    *   Hearing
-    *   Session
-    *   Commands
-    *   Corpus
-* [Hyperf 工作站]()
-    *   工作站原理
-    *   微信公众号Bot
-    *   百度智能音箱Bot
-    *   Web + Api 版
+    *   [事件机制](/docs/engineer/dispatcher.md)
+    *   [更多工具类](/docs/engineer/utils.md)
+* [对话管理模块](/docs/dm/dialog-manager.md)
+    *   [Context](/docs/dm/context.md)
+    *   [Stage](/docs/dm/stage.md)
+    *   [Intent](/docs/dm/intent.md)
+    *   [Memory](/docs/dm/memory.md)
+    *   [Dialog](/docs/dm/dialog.md)
+    *   [Questions](/docs/dm/questions.md)
+    *   [Hearing](/docs/dm/hearing.md)
+    *   [Session](/docs/dm/session.md)
+    *   [Commands](/docs/dm/commands.md)
+    *   [Corpus](/docs/dm/corpus.md)
+* [使用NLU](/docs/nlu.md)
+* [组件化](/docs/components.md)
+* [应用](/docs/app.md)
+    *   [Hyperf 工作站](/docs/apps/studio.md)
+    *   [微信公众号Bot](/docs/apps/wechat.md)
+    *   [百度智能音箱Bot](/docs/apps/dueros.md)
+    *   [网页版Bot](/docs/apps/web.md)
     *   自定义开发
     *   多模态中控
-* [使用NLU]()
-* [创建应用]()
-* [组件化]()
-    *   [定义组件](/docs/components/component-option.md)
-    *   NLU 管理工具
-    *   文字游戏
-    *   SimpleWiki
-    *   SimpleChat
+
 

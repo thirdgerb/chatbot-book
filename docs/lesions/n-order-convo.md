@@ -292,7 +292,7 @@ CommuneChatbot 认为, 由__依赖关系__形成的 ```Thread```, 在任何一�
                ) {
                    $dialog->say()->info('(userInfo::name 参数存在, 直接进入下一步"final")');
                    $this->user = $context;
-                   // 重定向到 falwell
+                   // 重定向到 farewell
                    return $dialog->goStage('final');
                }
 

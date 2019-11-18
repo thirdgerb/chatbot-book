@@ -45,6 +45,7 @@ CommuneChatbot 的双容器策略通过 [Commune/Container 库](https://packagis
 
 Container 的 api 请查阅 [Commune\Container\ContainerContract](https://github.com/thirdgerb/container/blob/master/src/ContainerContract.php).
 
+
 ## 2. CommuneChatbot 的双容器
 
 CommuneChatbot 的根应用是 [Commune\Chatbot\Blueprint\Application](https://github.com/thirdgerb/chatbot/blob/master/src/Chatbot/Blueprint/Application.php). 它持有进程级容器与请求级容器.
@@ -152,7 +153,7 @@ return [
 
 ### 3.3 直接通过容器注册服务
 
-在一些特殊的情况下, 比如在 [组件](/docs/components/component-option.md) 中, 可以获取到系统的根应用 ([Commune\Chatbot\Blueprint\Application](https://github.com/thirdgerb/chatbot/blob/master/src/Chatbot/Blueprint/Application.php)), 也可以通过它来直接注册服务 :
+在一些特殊的情况下, 比如在 [组件](/docs/components.md) 中, 可以获取到系统的根应用 ([Commune\Chatbot\Blueprint\Application](https://github.com/thirdgerb/chatbot/blob/master/src/Chatbot/Blueprint/Application.php)), 也可以通过它来直接注册服务 :
 
 ```php
 
@@ -336,3 +337,11 @@ CommuneChatbot 的工作站 [studio-hyperf](https://github.com/thirdgerb/studio-
 
 这个数组里的单例, 会被```CommuneChatbot``` 的进程级容器所继承.
 
+
+## 6. 内存泄漏排查
+
+双容器策略将请求封装到独立的 IoC 容器实例 ```Commune\Chatbot\Blueprint\Conversation\Conversation``` 中, 带来了一个额外的好处, 就是主要服务的内存泄漏更好排查了, 因为相互持有很可能导致容器自身也无法释放.
+
+系统提供了```Commune\Chatbot\Blueprint\Conversation\RunningSpy``` 接口和 ```Commune\Chatbot\Framework\Conversation\RunningSpyTrait``` 来记录进程内单例的数量.
+
+在机器人运行后, 给它输入 ```/runningSpy``` 命令, 会告诉我们主要类的实例数量. 如果哪个类的实例数随着请求线性上升了, 那就一定发生了内存泄漏.

@@ -13,15 +13,15 @@ CommuneChatbot 实现了配置中心抽象层策略. 从结果上来看, 可以�
     }
 ```
 
-CommuneChatbot 的各种组件, 都大量使用了这个机制, 用来存储各种```Option枚举值```.
+CommuneChatbot 的各种组件, 都大量使用了这个机制, 用来存储各种```Commune\Support\Option```类型的配置枚举值.
 
 更细致的 api, 请查阅 ```Commune\Support\OptionRepo\Contracts\OptionRepository``` 类.
 
 ## 为何要用配置中心
 
-在一个分布式服务端的系统中, 常常需要通过```分布式配置中心```, 例如```etcd```, ```zookeeper```等来获取配置. 从而做到一处修改, 立刻同步到所有的服务器.
+在一个分布式服务端的系统中, 常常需要通过分布式配置中心, 例如```etcd```, ```zookeeper```等来获取配置. 从而做到一处修改, 立刻同步到所有的服务器.
 
-配置中心不仅对于```服务化治理```很重要, 也可以应用到业务中. 比如在一个配置中心后台定义了一个秒杀活动的配置, 立刻所有服务器就上线了这个活动.
+配置中心不仅对于 "服务化治理" 很重要, 也可以应用到某些业务中. 比如在一个配置中心后台定义了一个秒杀活动的配置, 立刻所有服务器就上线了这个活动.
 
 [studio-hyperf](https://github.com/thirdgerb/studio-hyperf)
 底层依赖的 [Hyperf 框架](https://hyperf.wiki/#/zh/config) 对各种配置中心有很好的协程客户端支持,
@@ -73,6 +73,7 @@ CommuneChatbot 的各种组件, 都大量使用了这个机制, 用来存储各�
 
 ```php
 
+    // 伪代码
     // 从 storage 管道中获取配置
     public function find(
         string $category, // 配置的分类名称

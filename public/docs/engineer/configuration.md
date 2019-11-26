@@ -1,6 +1,6 @@
 # 配置体系
 
-## 机器人基础配置 ChatbotConfig
+## 1. 机器人基础配置
 
 ```CommuneChatbot``` 的启动和运行都围绕着根应用 ```Commune\Chatbot\Blueprint\Application```. 最简单的运行方法如下:
 
@@ -17,7 +17,7 @@ $app->getServer()->run();
 基本的配置数组```ChatbotConfig```定义了对话机器人的所有功能. 详细配置内容见```Commune\Chatbot\Config\ChatbotConfig``` 类.
 
 
-## 工作站 studio-hyperf 的配置文件
+## 2. 工作站配置文件
 
 在```CommuneChatbot```的工作站[studio-hyperf](https://github.com/thirdgerb/studio-hyperf) 中, 机器人的配置基于[Hyperf 的配置体系](https://hyperf.wiki/#/zh/config).
 
@@ -55,7 +55,7 @@ CommuneChatbot 的基本设计思路, 就是同一个机器人可以在多个端
 * ```php bin/hyperf.php commune:tinker```命令, 可以启动基于命令行的 ```tinker``` 机器人
 * ```php bin/hyperf.php commune:start [appName]``` 命令, 可以启动```apps``` 数组中定义的机器人服务端
 
-## 应用配置 HyperfBotOption
+## 3. 工作站配置
 
 [CommuneChatbot 框架](https://github.com/thirdgerb/chatbot) 只需要配置```ChatbotConfig``` 就可以启动. 但在```Studio-hyperf```中启动, 还要定义Hyperf 自己的 server 配置.
 
@@ -63,23 +63,22 @@ CommuneChatbot 的基本设计思路, 就是同一个机器人可以在多个端
 
 每个文件的数组结构, 都对应 option 类 ```Commune\Hyperf\Foundations\Options\HyperfBotOption```, 查看该类可以具体了解.
 
-运行 ```php bin/hyperf.php commune:start [appName]``` 实际读取的是这部分配置.
+运行 ```php bin/hyperf.php commune:start [appName]``` 实际读取的是这部分配置. 详情可查看```Commune\Hyperf\Commands\StartApp```.
 
 可以查看项目自带的```wechat```, ```dueros``` 等 app 了解配置方式.
 
-## 使用环境变量
+## 4. 使用环境变量
 
 CommuneChatbot 可以使用 ```.env``` 文件定义环境变量, 从而将配置中的敏感信息解耦到服务器上定义的```.env``` 文件中.
 
 相关功能基于[Hyperf 的环境变量](https://hyperf.wiki/#/zh/config?id=%e7%8e%af%e5%a2%83%e5%8f%98%e9%87%8f) 来实现.
 
 
-## 基于 Option 的配置体系
-
-
-### 什么是 Option
+## 5. 基于 Option 的配置体系
 
 CommuneChatbot 参考了 [tharos/schematic](https://packagist.org/packages/tharos/schematic) 项目来设计配置体系.
+
+### 5.1 什么是 Option
 
 简单来说, 作为配置传入的 PHP数组, 将会封装到一个继承自 ```Commune\Support\Option``` 类中, 作为一个实例来调用.
 
@@ -125,7 +124,7 @@ assert($test->option2 === 'test');
 * 自带```validate```方法, 可以校验配置的合法性
 * 可以作为单例绑定到```IoC容器```, 于是可以实现```依赖注入```
 
-### Option 的单例与枚举值
+### 5.2 Option 的单例与枚举值
 
 定义一个```Commune\Support\Option```允许单例和枚举值两种形式.
 
@@ -155,7 +154,7 @@ assert($config->getId() === 'test');
 这时认为该 Option 是一系列配置的枚举值.
 
 
-## 系统的核心配置
+## 6. 系统的核心配置
 
 - ```Commune\Chatbot\Config\ChatbotConfig``` : 对话机器人所有功能模块的配置
 - ```Commune\Chatbot\Config\Children\OOHostConfig``` : 多轮对话内核的配置
@@ -164,7 +163,7 @@ assert($config->getId() === 'test');
 请查阅相关类文件了解详细配置内容.
 
 
-## 注册自定义 Option 单例
+## 7. 注册自定义 Option 单例
 
 可以在```Commune\Chatbot\Config\ChatbotConfig::$configBindings``` 中定义需要全局绑定的单例.
 
@@ -202,7 +201,7 @@ return [
 
 ```
 
-## 注册组件 ComponentOption 单例
+## 8. 注册组件 ComponentOption 单例
 
 ComponentOption 是一种特殊的```单例 Option```, 它既是一个独立组件的配置, 同时又包含了```ComponentOption::bootstrap()``` 方法, 会在项目启动的时候运行. 具体情况请查看[组件化开发文档](/docs/components.md) .
 

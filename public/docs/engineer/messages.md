@@ -1,19 +1,15 @@
 # 消息体系
 
-CommuneChatbot 对各种平台传递来的信息做了统一的抽象, 通过这种方法实现多平台的适配.
+CommuneChatbot 对各种平台传递来的信息做了统一的抽象.
 
-## 1. 消息的生命周期
+## 1. 消息抽象
 
-```mermaid
-sequenceDiagram
-MessageRequest->>Conversation:封装请求为IncomingMessage
-Conversation->>Session:消息传递到Session
-Session->>Dialog:Dialog处理消息
-Dialog->>Conversation:生成回复消息
-Conversation->>Renderer:将 ReplyMsg 类型发送给渲染器
-Renderer->>Conversation:渲染器用 ReplyTemplate 渲染消息
-Conversation->>MessageRequest:封装为OutgoingMessage发送
-```
+简单来说, 任何平台的消息类型 (例如微信是xml数据) 都会通过```Commune\Chatbot\Blueprint\Conversation\MessageRequest``` 转化为 CommuneChatbot 的消息体系.
+
+CommuneChatbot 的回复类消息, 同样会发送给```Commune\Chatbot\Blueprint\Conversation\MessageRequest```, 渲染成平台的消息类型, 并发送给消息通道.
+
+通过这种策略, 可以实现一套机器人内核, 在多个平台上都适用. CommuneChatbot 目前在微信公众号, 小度音箱, 网页版三个平台上使用的就是同一个机器人内核.
+
 
 ## 2. 常用消息
 
@@ -27,7 +23,7 @@ CommuneChatbot 最常用到的消息有两种 :
     - 用来定义回复消息, 通常表示为 ```(string)replyId + (array)slots```.
     - 系统会用回复模板对回复消息进行渲染.
 
-其它所有可用的消息类型定义在命名空间 ```Commune\Chatbot\App\Messages``` 之下.
+其它所有已经定义的消息类型定义在命名空间 ```Commune\Chatbot\App\Messages``` 之下. 请务必查看.
 
 在了解了 CommuneChatbot 消息体系的接口设计之后, 您可以按需定义自己的 message.
 
@@ -198,7 +194,13 @@ interface VerbalMsg extends ConvoMsg
 
 Context 是上下文语境, 并不是可以传输的消息 (ConvoMsg). 但也可以理解为多轮对话之后产生的复杂消息, 从而允许处理消息的模块 (例如```Hearing```) 也将 Context 作为参数.
 
-## 4. Message 与 ConversationMessage
+## 4. 自定义消息
+
+CommuneChatbot 当前版本的消息体系还远未完善. 您可以在现有的 Message 体系之下按自己的需求定义更多消息类型.
+
+自定义消息类型需要考虑 interface 体系的继承关系, 以及端上的渲染机制. 渲染机制可以查看[相关文档](/docs/engineer/messages.md)
+
+## 5. Message 与 ConversationMessage
 
 ```Commune\Chatbot\Blueprint\Message\Message``` 是对消息本身 (文字, 图片, 语音等) 的抽象.
 

@@ -31,10 +31,13 @@
     *   [管道](/docs/engineer/pipeline.md)
     *   [事件机制](/docs/engineer/dispatcher.md)
     *   [权限机制](/docs/engineer/abbilities.md)
+    *   Translator
+    *   Logger
     *   [更多工具类](/docs/engineer/utils.md)
 * [对话管理模块](/docs/dm/dialog-manager.md)
     *   [对话生命周期](/docs/dm/lifecircle.md)
     *   [Session](/docs/dm/session.md)
+    *   [Director](/docs/dm/Director.md)
     *   [Context](/docs/dm/context.md)
     *   [Stage](/docs/dm/stage.md)
     *   [Intent](/docs/dm/intent.md)

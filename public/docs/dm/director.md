@@ -34,7 +34,7 @@
     }
 ```
 
-系统定义了许多种 ```Commune\Chatbot\OOHost\Directing\Navigator```, 在命名空间``````Commune\Chatbot\OOHost\Directing``` 之下, 可以查看源代码了解.
+系统定义了许多种 ```Commune\Chatbot\OOHost\Directing\Navigator```, 在命名空间```Commune\Chatbot\OOHost\Directing``` 之下, 可以查看源代码了解.
 
 开发者通常只需要通过```Commune\Chatbot\OOHost\Dialogue\Dialog```提供的 API 去返回调度逻辑即可. 不用手动去生成它们.
 
@@ -89,3 +89,5 @@ demo.INFO: sessionTracking 3 times :
     "belongsTo":"4b905076-a5a0-4ced-8cc0-29f8b46d3083"
 }
 ```
+
+您可以通过机器人配置中的参数```$chatbotConfig->host->logRedirectTracking``` 决定是否记录这些日志. 您也可以关闭默认的日志, 通过一个自定义的 SessionPipe 中间件去手动记录 tracking. 详见 [管道文档](/docs/engineer/pipeline.md).

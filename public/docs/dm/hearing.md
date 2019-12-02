@@ -191,16 +191,22 @@ Hearing API 中许多方法定义了 callable 对象作为参数. 例如
 ```php
     return $dialog->hear()
         // 匹配到了 "你好", 会执行传入的闭包
-        ->is('你好', function(Dialog $dialog) {
+        ->is(
+            '你好',
+            // 使用闭包 (Closure) 定义执行逻辑. 返回一个 Navigator
+            function(Dialog $dialog) : Navigator {
 
-            // 向用户回礼
-            $dialog->say()->info('你也好啊!');
+                // 向用户回礼
+                $dialog->say()->info('你也好啊!');
 
-            // 等待用户下一次输入
-            return $dialog->wait();
-        })
+                // 等待用户下一次输入
+                return $dialog->wait();
+            }
+        )
 
 ```
+
+> Hearing 中传入的 Callable 对象就是执行逻辑, 理想情况下每一个执行逻辑都通过 Dialog 返回一个 Navigator, 除非充分了解为什么不返回.
 
 这些 Callable 对象都实现了依赖注入. 除了系统默认已注册的服务都可以直接依赖注入之外, 还提供了一些上下文相关的依赖. 最常用的有:
 
@@ -518,9 +524,116 @@ Hearing 提供了另一个方法简化这种情形的代码:
 
 ### 7.2 匹配问答
 
+问答是机器人引导用户对话的最主要形式. 具体的用法在 [问答文档](/docs/dm/questions.md) 中有介绍.
+
+Hearing API 为问答封装了部分方法以简化使用. 最基本的方法是 :
+
+```php
+    return $dialog->hear($message)
+        ...
+        // 可以用 Commune\Chatbot\Blueprint\Message\QA\Answer 来依赖注入
+        ->isAnswer(function(Answer $message, Dialog $dialog) {
+            // 选项
+            $choice = $answer->getChoice();
+            // 原消息
+            $origin = $answer->getOriginMessage();
+            // 对问题的回答, 根据问题类型不同, 回答也有区别.
+            // 例如 Confirmation 返回的是 bool
+            // 选择类问题, 用户只要局部匹配了, 返回也是完整的答案
+            $result = $answer->toResult();
+            ...
+        })
+        ...
+        ->end();
+```
+
+如果匹配到了答案, 则答案对象```Commune\Chatbot\Blueprint\Message\QA\Answer```会取代原来的 Message, 对处理逻辑进行依赖注入.
+
+#### 使用 Choice
+
+由于所有的问题抽象 ```Commune\Chatbot\Blueprint\Message\QA\Question``` 都允许给用户建议选项, 所有的回答抽象 ```Commune\Chatbot\Blueprint\Message\QA\Answer``` 都有```getChoice()``` 方法, 所以 Hearing 也可以用 choice 来进行匹配:
+
+```php
+    return $stage->buildTalk()
+        ->askChoose(
+            $question,
+            [
+                $answer0,  // 没有指定 index
+                1 => $answer1, // 整数作为 index
+                'a' => $answer2, // 字符串作为 index
+                'B' => $answer3, // 大写字符作为 index
+                ...
+            ]
+        )
+
+        ->hearing()
+
+        // 用序号匹配到 $answer0
+        // 使用 Commune\Chatbot\App\Messages\QA\Choice 作为依赖注入对象
+        ->isChocie(0, function(Choice $message, Dialog $dialog) {
+            ...
+        })
+
+        // 匹配到 $answer1
+        ->isChoice(1, ...)
+
+        // 匹配到 $answer2
+        ->isChoice('a', ...)
+
+        // 字符串无关大小写
+        ->isChoice('b', ...)
+
+        ...
+
+        ->end();
+```
+
+> 注意, 用字符串作为选项序号的时候, 匹配时是不区分大小写的. 因为实际使用时发现精确匹配大小写反而容易引发歧义, 不符合直觉.
+
+在 [问答文档](/docs/dm/questions.md) 中会介绍, 各种类型的问题和答案是成对出现的. 例如```Commune\Chatbot\App\Messages\QA\Confirm``` 对应的回答 ```Commune\Chatbot\App\Messages\QA\Confirmation```. 因此在确认匹配成功时, 建议直接用回答的类名作为依赖注入的对象. 使用强类型能更好保证可读性, 并减少错误.
+
+#### 匹配自定义问题
+
+在问答场景中, 系统会保存上一轮机器人提出的问题到上下文, 使用它来判断当前用户的输入是否是一种回答. 从上下文中获取问题可通过```Dialog::currentQuestion()```方法.
+
+但有可能某些情形下, 您需要使用自己定义的问题取代上下文记录的问题. 这时可以使用```Hearing::matchQuestion($question)``` 方法, 替换掉 Hearing 匹配时用的问题.
+
+这样做有可能导致用户的迷惑, 请确认其中利弊.
+
+#### 肯定与否定
+
+机器人与用户对话, 最常见的情况是要用户进行确认. 然而对确认与否的回答却是五花八门的, 通常有以下几种情况 :
+
+- 精确给出建议的字符, 例如 "yes" 和 "no"
+- 用一个积极的表达, 或消极的表达来回复, 例如 ```好, 不错, 可以, 别, 不要"
+- 重复词句来表达意图, 例如 "要不要加冰", 回答 "加"
+
+为了适应这种复杂的情形, CommuneChatbot 使用 "情绪匹配". 简单而言, 把各种形式的回答, 统一归纳到某种情绪中. 并且对于确认类型的问答, 单独提供了 ```Hearing::isPositive()```和```Hearing::isNegative()```两个方法.
+
+因此强烈建议肯定与否定的场景, 使用以下 API :
+
+```php
+    return $stage->buildTalk()
+        ->askConfirm("请问是否需要加冰")
+
+        ->hearing()
+
+        // 用户表达肯定
+        ->isPositive( ... )
+
+        // 用户表达否定
+        ->isNegative( ... )
+
+        ...
+        ->end();
+```
 
 
 ### 7.3 匹配情绪
+
+除了 Positive, Negative 两种标准情绪之外, 您还可以定义更多自己设计的 "情绪" 概念. 关于情绪模块的介绍, 请看 [相关文档](/docs/dm/emotion.md).
+
+对于自定义的情绪, 可以使用 ```Hearing::feels($emotionName, $action)``` 方法来进行匹配.
 
 ### 7.4 PHP匹配规则
 

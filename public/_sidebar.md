@@ -32,7 +32,6 @@
     *   [事件机制](/docs/engineer/dispatcher.md)
     *   [权限机制](/docs/engineer/abbilities.md)
     *   CacheAdapter
-    *   Translator
     *   Logger
     *   [更多工具类](/docs/engineer/utils.md)
 * [对话管理模块](/docs/dm/dialog-manager.md)
@@ -43,6 +42,7 @@
     *   [Stage](/docs/dm/stage.md)
     *   [Intent](/docs/dm/intent.md)
     *   [Memory](/docs/dm/memory.md)
+    *   [Registrar](/docs/dm/registrar.md)
     *   [Dialog](/docs/dm/dialog.md)
     *   [Questions](/docs/dm/questions.md)
     *   [Hearing](/docs/dm/hearing.md)

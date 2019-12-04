@@ -169,7 +169,7 @@ interface VerbalMsg extends ConvoMsg
 *   ```Commune\Chatbot\OOHost\Command\CommandMessage```
     *   对命令格式的文字输入 (例如```#rm -rf /```)进行解析后, 拿到的对象.
     *   使用 ```Hearing::isCommand``` 命中条件后, 传入的就是这个对象
-    *   [命令模块](/docs/dialogue/command.md) 也将此对象作为参数
+    *   [命令模块](/docs/dm/command.md) 也将此对象作为参数
 *   ```Commune\Chatbot\App\Messages\ArrayMessage```
     *   对文字输入抽取关键信息后, 解析成数组式的对象
     *   使用 ```Hearing::pregMatch``` 会将正则匹配到的参数放入这个对象中.
@@ -183,7 +183,7 @@ interface VerbalMsg extends ConvoMsg
 
 而```Commune\Chatbot\Blueprint\Message\QA\Answer``` 则是一个需要渲染的回复消息.
 
-具体情况请看 [问答模块](/docs/dialogue/qa.md).
+具体情况请看 [问答模块](/docs/dm/qa.md).
 
 
 ### 3.6 UnsupportedMsg

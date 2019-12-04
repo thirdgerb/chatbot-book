@@ -16,6 +16,8 @@ $app->getServer()->run();
 
 基本的配置数组```ChatbotConfig```定义了对话机器人的所有功能. 详细配置内容见```Commune\Chatbot\Config\ChatbotConfig``` 类.
 
+CommuneChatbot 使用了基于 ```Commune\Support\Option``` 实现的配置体系, 简单而言就是将配置数组, 封装到一个配置对象中; 从而将弱类型的数组式调用, 变成强类型的对象式调用. 具体用法在下文有介绍.
+
 
 ## 2. 工作站配置文件
 
@@ -106,7 +108,13 @@ class TestOption extends Commune\Support\Option
     }
 }
 
-$test = new TestOption(['option1'=>'abc']);
+// 仍然用数组来描述配置, 但不需要所有的元素
+$testConfigArr = [
+    'option1'=>'abc'
+];
+
+// 将数组配置封装成对象配置.
+$test = new TestOption($textConfigArr);
 
 assert($test->option1 === 'abc');
 assert($test->option2 === 'test');

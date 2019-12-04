@@ -3,12 +3,13 @@
 当对话机器人接受到一个用户消息后, 会通过它还原出当前的会话对象```Commune\Chatbot\OOHost\Session\Session```, 然后调用```Session::handle()``` 方法来处理所有响应逻辑.
 
 在一个复杂的多轮对话逻辑中, 尽管只响应了用户的一条消息, 但实际上整个多轮对话状态机已经经历了若干轮状态变更.
-
 这些状态变更逻辑比较复杂, 如果放任的话可能会造成几十甚至上百层的函数调用, 一旦出现问题排查起来很麻烦.
 
 所以 CommuneChatbot 项目的 OOHost 模块使用了 ```Commune\Chatbot\OOHost\Directing\Director``` 类来负责做多轮对话状态机的调度.
+将上下文状态切换的逻辑保存在 ```Commune\Chatbot\OOHost\Directing\Navigator```对象中, 从 Context 层层返回到 Director 之后, 才执行逻辑.
+这样函数调用的深度会更小, 而且也便于追踪轨迹.
 
-简单来说, 用户只需要专注于定义 "单轮对话" [Stage](/docs/dm/stage.md), 在上下文逻辑中通过 Dialog 正确返回了```Commune\Chatbot\OOHost\Directing\Navigator```对象就足够. Director 会自行处理调度逻辑.
+用户只需要专注于定义 "单轮对话" [Stage](/docs/dm/stage.md), 在上下文逻辑中通过 Dialog 正确返回了```Commune\Chatbot\OOHost\Directing\Navigator```对象就足够. Director 会自行处理调度逻辑.
 
 ```php
 

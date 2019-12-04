@@ -118,7 +118,7 @@ CommuneChatbot 通过```Commune\Chatbot\Blueprint\Conversation\Conversation```�
         ->error($replyId, $slots);
 ```
 
-更多情况下, 我们并不直接使用 Conversation 来发送回复, 而是通过对话管理中的[Dialog](/docs/dialogue/dialog.md) 模块.
+更多情况下, 我们并不直接使用 Conversation 来发送回复, 而是通过对话管理中的[Dialog](/docs/dm/dialog.md) 模块.
 
 ```php
     $dialog
@@ -139,6 +139,8 @@ R-->|无模板| 默认模板
 ```
 
 Renderer 根据```Commune\Chatbot\Blueprint\Message\ReplyMsg::getReplyId()``` 的值判断是否已经注册了渲染模板, 如果没有注册, 则调用默认的模板.
+
+> 您完全可以跳过渲染机制, 直接用想要回复的文本作为 ReplyId. 例如 ```$dialog->say()->info('您好, 请问我有什么可以帮助您的?')```.
 
 ### 3.1 注册渲染模板
 
@@ -213,7 +215,8 @@ Slots 中的参数 ```'world' => 'guest'```, 作为值渲染到了文本中的``
 
 CommuneChatbot 的```Commune\Chatbot\Contracts\Translator```模块底层使用了[symfony translator](https://symfony.com/doc/current/components/translation.html). 可以用 php, yaml, xliff 等多种方式加载资源文件. 默认使用 php 文件来定义.
 
-系统默认的资源文件位置, 可以在基础配置```Commune\Chatbot\Config\ChatbotConfig::$translation``` 中定义. 配置具体结构请查看```Commune\Chatbot\Config\Children\TranslationConfig```.
+系统默认的资源文件位置, 可以在基础配置```$chatbotConfig->translation``` 中定义. 配置具体结构请查看```Commune\Chatbot\Config\Children\TranslationConfig```.
+
 
 ### 3.4 按照 ICU 规范定义文本
 

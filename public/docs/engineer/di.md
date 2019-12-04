@@ -199,7 +199,7 @@ class MessengerPipe implements InitialPipe
 
 __事件__ : 关于事件, 详情见[事件的文档](/docs/engineer/dispatcher.md). 所有事件的```listener```的构造方法都实现了依赖注入.
 
-__命令__ : 关于命令, 详情见[命令的文档](/docs/dialogue/command.md). 所有命令的构造器```__construct```方法都实现了依赖注入.
+__命令__ : 关于命令, 详情见[命令的文档](/docs/dm/command.md). 所有命令的构造器```__construct```方法都实现了依赖注入.
 
 __Stage中的callable对象__ : 定义```Stage```过程中的```callable```对象也都实现了依赖注入. 具体而言, 如果```callable```是 :
 

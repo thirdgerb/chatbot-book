@@ -354,7 +354,7 @@ return $dialog->hear()
 
 对于无法理解的用户输入, 默认的拒答逻辑会在 ```Hearing::end()``` 方法中执行.
 
-如果没有设置默认的拒答逻辑, 系统会自动调用机器人配置文件里的```$chatbotConfig->defaultMessages->messageMissMatched``` 来回复给用户. 具体配置可以查看```Commune\Chatbot\Config\Children\DefaultMessagesConfig```.
+如果没有设置默认的拒答逻辑, 系统会自动调用机器人配置数组里的```$chatbotConfig->defaultMessages->messageMissMatched``` 来回复给用户. 具体配置可以查看```Commune\Chatbot\Config\Children\DefaultMessagesConfig```.
 
 有时候我们希望给用户一个更灵活的通用回复模块, 例如闲聊模块. 当用户的意图无法理解时, 就调用闲聊模块试图用闲聊数据库来响应用户的意图.
 
@@ -381,7 +381,7 @@ CommuneChatbot 设计了默认的 "帮助" 机制. 当用户在多轮对话某�
 
 此外, 也可以给整个 Context 定义帮助内容, 通过 ```Context::__help()``` 方法. 这个方法将作为 callable 对象, 在 ```Hearing::end()``` 环节去调用.
 
-如果用户求助, 却没有任何帮助方法可用时, 会用机器人配置文件中定义的```$chatbotConfig->defaultMessages->noHelpInfoExists``` 回复给用户. 具体请看```Commune\Chatbot\Config\Children\DefaultMessagesConfig```.
+如果用户求助, 却没有任何帮助方法可用时, 会用机器人配置数组中定义的```$chatbotConfig->defaultMessages->noHelpInfoExists``` 回复给用户. 具体请看```Commune\Chatbot\Config\Children\DefaultMessagesConfig```.
 
 ### 6.6 Hearing::heardOrMiss()
 

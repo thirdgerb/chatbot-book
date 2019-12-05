@@ -8,6 +8,8 @@
     *   [工程化还是机器人学习](/docs/core-concepts/engeering-or-machine-learning.md)
     *   [自然语言单元](/docs/core-concepts/nlu.md)
     *   [多模态交互](/docs/core-concepts/multimodal.md)
+* [应用生命周期 ★](/docs/engineer/app-lifecircle.md)
+* [对话生命周期 ★](/docs/dm/lifecircle.md)
 * [快速教程 ★](/docs/lesions/index.md)
     * [第一课 : hello world](/docs/lesions/helloworld.md)
     * [第二课 : 定义单轮对话](/docs/lesions/single-turn-convo.md)
@@ -19,8 +21,29 @@
     * [第八课 : 意图与上下文记忆]
     * [第九课 : 定义多轮对话组件]
     * [第十课 : 渲染回复]
+* [组件化](/docs/components.md)
+* [使用NLU](/docs/nlu.md)
+* [搭建应用](/docs/app.md)
+    *   [Hyperf 工作站](/docs/apps/studio.md)
+    *   [微信公众号Bot](/docs/apps/wechat.md)
+    *   [百度智能音箱Bot](/docs/apps/dueros.md)
+    *   [网页版Bot](/docs/apps/web.md)
+    *   自定义开发
+    *   多模态中控
+* [对话管理模块](/docs/dm/dialog-manager.md)
+    *   [Session](/docs/dm/session.md)
+    *   [Director](/docs/dm/Director.md)
+    *   [Context](/docs/dm/context.md)
+    *   [Stage](/docs/dm/stage.md)
+    *   [Intent](/docs/dm/intent.md)
+    *   [Memory](/docs/dm/memory.md)
+    *   [Registrar](/docs/dm/registrar.md)
+    *   [Dialog](/docs/dm/dialog.md)
+    *   [Questions](/docs/dm/questions.md)
+    *   [Hearing](/docs/dm/hearing.md)
+    *   [Commands](/docs/dm/commands.md)
+    *   [Corpus](/docs/dm/corpus.md)
 * [工程模块](/docs/engineer/engineer.md)
-    *   [应用生命周期](/docs/engineer/app-lifecircle.md)
     *   [双容器与依赖注入](/docs/engineer/di.md)
     *   [配置体系](/docs/engineer/configuration.md)
     *   [配置中心抽象层](/docs/engineer/abstract-config.md)
@@ -34,28 +57,6 @@
     *   CacheAdapter
     *   Logger
     *   [更多工具类](/docs/engineer/utils.md)
-* [对话管理模块](/docs/dm/dialog-manager.md)
-    *   [对话生命周期](/docs/dm/lifecircle.md)
-    *   [Session](/docs/dm/session.md)
-    *   [Director](/docs/dm/Director.md)
-    *   [Context](/docs/dm/context.md)
-    *   [Stage](/docs/dm/stage.md)
-    *   [Intent](/docs/dm/intent.md)
-    *   [Memory](/docs/dm/memory.md)
-    *   [Registrar](/docs/dm/registrar.md)
-    *   [Dialog](/docs/dm/dialog.md)
-    *   [Questions](/docs/dm/questions.md)
-    *   [Hearing](/docs/dm/hearing.md)
-    *   [Commands](/docs/dm/commands.md)
-    *   [Corpus](/docs/dm/corpus.md)
-* [使用NLU](/docs/nlu.md)
-* [组件化](/docs/components.md)
-* [应用](/docs/app.md)
-    *   [Hyperf 工作站](/docs/apps/studio.md)
-    *   [微信公众号Bot](/docs/apps/wechat.md)
-    *   [百度智能音箱Bot](/docs/apps/dueros.md)
-    *   [网页版Bot](/docs/apps/web.md)
-    *   自定义开发
-    *   多模态中控
+
 
 

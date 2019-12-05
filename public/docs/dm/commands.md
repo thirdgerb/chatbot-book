@@ -146,7 +146,7 @@ SessionCommand 需要通过中间件加载到系统中才能起作用. 请检查
 
 它们负责检查用户的消息是否符合命令的格式, 如果符合某个命令, 则用命令去响应用户. 您可以在这里添加自己的自定义命令.
 
-定义一个命令管道, 需要创建类继承```Commune\Chatbot\OOHost\Command\SessionCommandPipe```, 并将它注册到机器人配置文件的```$chatbotConfig->host->sessionPipes```中.
+定义一个命令管道, 需要创建类继承```Commune\Chatbot\OOHost\Command\SessionCommandPipe```, 并将它注册到机器人配置数组的```$chatbotConfig->host->sessionPipes```中.
 
 ```SessionCommandPipe``` 有两个关键属性 :
 

@@ -43,7 +43,7 @@
 
 多轮对话状态机经过 Director 进行状态变更, 被称作重定向. 如果上下文逻辑出现错误的死循环, 理论上重定向会一直循环下去.
 
-因此需要设定重定向的最大次数, 超过次数就抛出异常, 终止会话. 这个重定向次数定义在机器人配置文件中的 ```$chatbotConfig->host->maxRedirectTimes``` 中. 具体可以查看```Commune\Chatbot\Config\Children\OOHostConfig```.
+因此需要设定重定向的最大次数, 超过次数就抛出异常, 终止会话. 这个重定向次数定义在机器人配置数组中的 ```$chatbotConfig->host->maxRedirectTimes``` 中. 具体可以查看```Commune\Chatbot\Config\Children\OOHostConfig```.
 
 如果您的单轮对话逻辑, 在特殊情况下状态变更次数超过默认值, 您可以调高这个参数.
 

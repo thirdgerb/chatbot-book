@@ -48,7 +48,25 @@ Container 的 api 请查阅 [Commune\Container\ContainerContract](https://github
 
 ## 2. CommuneChatbot 的双容器
 
-CommuneChatbot 的根应用是 [Commune\Chatbot\Blueprint\Application](https://github.com/thirdgerb/chatbot/blob/master/src/Chatbot/Blueprint/Application.php). 它持有进程级容器与请求级容器.
+CommuneChatbot 的根应用是 [Commune\Chatbot\Blueprint\Application](https://github.com/thirdgerb/chatbot/blob/master/src/Chatbot/Blueprint/Application.php).
+它的默认实现是```Commune\Chatbot\Framework\ChatApp```. 系统所有的运行都基于它:
+
+```php
+
+// 初始化根应用
+$chatApp = new Commune\Chatbot\Framework\ChatApp($config);
+
+// 启动服务, 自动监听用户消息
+$chatApp->getServer()->run();
+```
+
+想要获取根应用, 可以通过依赖注入, 或是调用 :
+
+```php
+$app = Commune\Chatbot\Framework\ChatApp::getInstance();
+```
+
+根应用持有进程级容器与请求级容器.
 
 * 进程级容器 : ``` $app->getProcessContainer() ```
 * 请求级容器 : ``` $app->getConversationContainer() ```
@@ -60,9 +78,11 @@ CommuneChatbot 的根应用是 [Commune\Chatbot\Blueprint\Application](https://g
 
 ## 3. 服务注册
 
-Laravel 为代表的 ```ServiceProvider``` 机制是目前注册服务的最佳实践, 将注册服务的逻辑定义在独立的类文件中. 除此之外也有类似```java spring```的基于文件扫描与注解的方式来注册.
+Laravel 为代表的 ```ServiceProvider``` 机制是目前注册服务的最佳实践, 将注册服务的逻辑定义在独立的类文件中, 方便管理. 除此之外也有类似```java spring```的基于文件扫描与注解的方式来注册.
 
 ### 3.1 Service Provider
+
+关于 Service Provider 的用法, 可以参考 [Laravel 的文档](https://laravel.com/docs/6.x/providers), CommuneChatbot 试图和 Laravel 的做法保持一致性.
 
 CommuneChatbot 的 ```ServiceProvider``` 基类是 [Commune\Chatbot\Blueprint\ServiceProvider](https://github.com/thirdgerb/chatbot/blob/master/src/Chatbot/Blueprint/ServiceProvider.php)
 
@@ -83,6 +103,7 @@ class SoundLikeServiceProvider extends BaseServiceProvider
 
     public function register()
     {
+        // $this->app 获得当前容器的实例, 并不需要关心是进程级还是请求级.
         if ($this->app->bound(SoundLikeInterface::class)) {
             return;
         }
@@ -100,7 +121,38 @@ class SoundLikeServiceProvider extends BaseServiceProvider
 
 > 注意常量 ```IS_PROCESS_SERVICE_PROVIDER```, 用来标记一个 ```ServiceProvider``` 是进程级的, 还是请求级的. 如果注册错误, 启动的时候会在 stdio 提示 warning 级别的错误.
 
-容器会遍历所有已注册的 ```ServiceProvider```, 执行 ```ServiceProvider::register```方法以注册所有的工厂方法. 之后才会再执行```ServiceProvider::boot```方法, 以保证每个组件完成初始化.
+容器会遍历所有已注册的 ```ServiceProvider```, 执行 ```ServiceProvider::register```方法以注册所有的工厂方法. 之后才会在合适的时机执行```ServiceProvider::boot```方法, 以保证每个组件完成初始化.
+
+Service Provider 可以通过 ```$this->app``` 获得 IoC 容器的实例, 通过它来注册服务. 可用的 API 请查看```Commune\Container\ContainerContract```. 基本上和 Laravel 风格保持一致, 但在```Container::instance()``` 有所不同. 常用方法如下:
+
+```php
+    // Container 是这个 $app 的类.
+    $app = new Container();
+
+    // 用闭包作为工厂, 定义一个单例
+    $app->singleton(ClassName1::class, function(){...});
+
+    // 用类名来描述单例的实现, ImplementsName 也会在构造时进行依赖注入
+    $app->singleton(InterfaceName::class, ImplementsName::class);
+
+    // 注册工厂方法, 但不是单例
+    $app->bind(ClassName::class, function(){...});
+
+    // 用字符串作为抽象, 标记工厂方法. 无法用于依赖注入
+    $app->bind('cache', function(){...});
+
+
+    $object = new SomeClass();
+
+    // 绑定一个实例作为单例, Container 自身所有的容器实例都持有这个实例
+    $app->instance('instance1', $object);
+
+
+    // 绑定一个实例作为单例, 只有 $app 才持有这个实例, Container 其它实例则不持有.
+    $app->share('instance2', $object);
+
+```
+
 
 ### 3.2 在配置中注册服务
 
@@ -252,7 +304,7 @@ __Stage中的callable对象__ : 定义```Stage```过程中的```callable```对�
 |Commune\Chatbot\Blueprint\Application      |系统的根应用 |
 |Commune\Chatbot\Blueprint\Kernel           |负责响应消息的内核 |
 |Commune\Chatbot\Contracts\ChatServer       |负责运行循环响应的服务端 |
-|Commune\Chatbot\Contracts\ConsoleLogger    |系统输出到 stdio 的日志模块 |
+|Commune\Chatbot\Contracts\ConsoleLogger    |系统输出到 console 的日志模块 |
 |Commune\Chatbot\Contracts\ExceptionHandler |处理全局捕获的异常 |
 |Commune\Chatbot\Contracts\EventDispatcher  |系统默认的事件机制 |
 |Psr\Log\LoggerInterface                    |系统默认的日志模块 |

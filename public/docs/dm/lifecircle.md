@@ -277,21 +277,34 @@ class LoopContext extends Context
 - restart : 对话重新开始
 - 指定一个具体的 stage, 试图通过新的多轮对话流程来修复问题.
 
-对于一个最基础的多轮对话而言, 中断策略是全局共享的. 任何一个节点退出都由全局来捕获处理.
+对于一个最基础的多轮对话 Context 而言, 中断策略可以定义在某个 Stage 节点, 也可以定义为全局逻辑, 任何一个节点退出都由全局来捕获处理.
 
 ```php
 
 class SimpleContext extends Context
 {
+
     ...
 
-    public function exiting(Exiting $listener) : void
+    // 全局中断逻辑
+    public function __exiting(Exiting $listener) : void
     {
         $listener
             ->onCancel(...)   // 取消的逻辑
             ->onFailure(...)  // 故障的逻辑
             ->onReject(...)   // 无权限时的逻辑
             ->onFulfill(...); // 正常结束时的逻辑
+    }
+
+    // 单个 Stage 的中断逻辑. 优先全局逻辑.
+    public function __onStart(Stage $stage) : Navigator
+    {
+        return $stage->onExiting(function(Exiting $listener){
+                $listener->onCancel(...);
+            })
+            ->dependOn(
+                ...
+            );
     }
 }
 ```

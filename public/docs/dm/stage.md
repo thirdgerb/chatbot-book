@@ -698,7 +698,7 @@ Dialog::backward :
 
 ```
 
-由于 Backward 之后还可以继续 Backward,
+由于 Backward 之后还可以继续 Backward, 所以 Session 需要存储多个 Snapshot.
 
 很显然, Snapshot 拥有较大的数据量, 每一帧都长期存储, 系统会迅速膨胀到崩溃.
 我们可以通过机器人配置数组中的```$chatbotConfig->host->maxBreakpointHistory``` 中定义可 Backward 的步数, 超过这个步数的记忆就销毁掉, 使 Backward 变为 Rewind.
@@ -830,3 +830,90 @@ Stage 提供 ```Stage::component()``` 方法, 允许把 Stage 的逻辑封装到
 - 分页菜单 : ```Commune\Chatbot\App\Callables\StageComponents\Paginator```
 
 您可以查看源码了解用法, 也可以按需定义您自己的组件与人分享.
+
+
+## 9. 子对话
+
+在 [多轮对话生命周期](/docs/dm/lifecircle.md) 中, 我们介绍了 "子对话与多任务调度" 的概念. 这里不再重复.
+
+完整的子对话管理可以通过 Stage 来定义. 示例如下:
+
+```php
+ /**
+     *
+     * 测试会话嵌套.
+     * 测试子会话的各种功能.
+     * 可以测试的点:
+     *
+     * 1. before : 父dialog 拦截到, 仍然进入子dialog
+     * 2. stop  : 父dialog 拦截到, 不进入子dialog
+     * 3. miss : 子dialog miss, 父dialog 返回拦截到
+     * 4. quit : 子dialog quit, 父dialog 拦截到, 返回菜单.
+     * 5. fulfill : 子dialog fulfill, 触发 quit
+     * 6. next : 子dialog 切换stage, 直到触发 fulfill
+     * 7. maze : 子dialog 进入迷宫游戏
+     * 8. stage : 查看子dialog 的stage
+     *
+     * @param Stage $stage
+     * @return Navigator
+     */
+    public function __onTestSubDialog(Stage $stage): Navigator
+    {
+        return $stage
+            // 正常的stage事件.
+            ->onStart(function(Dialog $dialog){
+                $dialog->say()->info('sub dialog start');
+            })
+            ->onCallback(function(Dialog $dialog){
+                $dialog->say()->info('sub dialog callback');
+            })
+            ->onFallback(function(Dialog $dialog){
+                $dialog->say()->info('sub dialog fallback');
+            })
+
+            // 开启 sub dialog
+            ->onSubDialog(
+                $this->getId(),
+                function(){
+                    return new SubDialogCase();
+                }
+            )
+            // 进入子会话之前.
+            ->onBefore(function(Dialog $dialog){
+                return $dialog->hear()
+                    ->is('before', function(Dialog $dialog){
+                        $dialog->say()->info('hit before');
+                        return null;
+                    })
+                    ->is('menu', function(Dialog $dialog) {
+                        $dialog->say()->info('stop sub dialog and go start');
+                        return $dialog->restart();
+                    })
+                    ->heardOrMiss();
+            })
+            // 子会话 wait 时
+            ->onWait(function(Dialog $dialog){
+                $dialog->say()->info('sub dialog is wait');
+                return $dialog->wait();
+            })
+            // 子会话 miss 时
+            ->onMiss(function(Dialog $dialog){
+                $dialog->say()->info('sub dialog miss match');
+                return $dialog->hear()
+                    ->is('miss', function(Dialog $dialog){
+                        $dialog->say()->info('catch miss');
+                        return $dialog->wait();
+                    })
+                    ->end();
+            })
+
+            // 子会话退出时.
+            ->onQuit(function(Dialog $dialog){
+                $dialog->say()->info('sub dialog want quit');
+                return $dialog->restart();
+            })
+            ->end();
+    }
+```
+
+具体的定义方式, 可以查阅源码 ```Commune\Chatbot\OOHost\Context\Stages\SubDialogBuilder```.

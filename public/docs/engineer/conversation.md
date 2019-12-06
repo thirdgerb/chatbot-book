@@ -4,7 +4,11 @@ Conversation 是对用户完整请求的高级封装,
 接口定义为```Commune\Chatbot\Blueprint\Conversation\Conversation```,
 具体实现为```Commune\Chatbot\Framework\Conversation\ConversationImpl```.
 
-Conversation 本身既是在中间件中传输的对象, 又是一个请求级容器. 绝大多数与请求相关的服务和单例, 都可以通过 Conversation 对象来获取.
+Conversation 本身既是在中间件中传输的对象, 又是一个请求级容器. 绝大多数与请求相关的服务和单例, 都可以通过 Conversation 对象来获取 : ```$conversation->get($abstract)```.
+
+系统启动的时候, 会将所有请求级的服务通过 Service Provider 注册到 Conversation 中, 只注册一次.
+
+每一个请求都会生成一个独立的 Conversation 实例, 并运行已注册的 Service Provider 的```Commune\Chatbot\Blueprint\ServiceProvider::boot()``` 方法. 开发者需要了解该方法每个请求都会运行一次.
 
 
 ## API

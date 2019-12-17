@@ -30,6 +30,9 @@ CommuneChatbot 默认的日志模块, 是通过  ```Commune\Chatbot\Framework\Pr
 - 请求级日志 : ```$conversation->getLogger()```
 - 会话级日志 : ```$session->logger```
 
+系统默认的日志使用了 ```Commune\Chatbot\Framework\Impl\MonologWriter```,
+允许传入 Exception 作为 $message, 会使用 ```Commune\Chatbot\Contracts\ExceptionReporter``` 进行上报.
+
 ## ConsoleLogger
 
 CommuneChatbot 启动的时候, 会把启动信息打印到 Console 上, 这是通过```Commune\Chatbot\Contracts\ConsoleLogger```.

@@ -34,3 +34,9 @@ Conversation 所有子服务的定义在 ```Commune\Chatbot\Framework\Providers\
 
 这里注册的服务, 都可以作为单例在依赖注入时获取. 也可以用自己新注册的服务去覆盖默认的.
 
+
+## onFinish
+
+系统可以通过```Commune\Chatbot\Blueprint\Conversation\Conversation::onFinish()``` 方法注册闭包, 在```Commune\Chatbot\Framework\ChatKernelImpl``` 回收 Conversation 的时候执行.
+
+该功能通常用于系统内部, 用于解决生命周期比较特殊的场景 (例如 Quit), 通常不应该使用.

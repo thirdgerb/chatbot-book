@@ -302,10 +302,10 @@ __Stage中的callable对象__ : 定义```Stage```过程中的```callable```对�
 |interface                                  | 简介 |
 |-                                          |- |
 |Commune\Chatbot\Blueprint\Application      |系统的根应用 |
-|Commune\Chatbot\Blueprint\Kernel           |负责响应消息的内核 |
+|Commune\Chatbot\Blueprint\ChatKernel           |负责响应消息的内核 |
 |Commune\Chatbot\Contracts\ChatServer       |负责运行循环响应的服务端 |
 |Commune\Chatbot\Contracts\ConsoleLogger    |系统输出到 console 的日志模块 |
-|Commune\Chatbot\Contracts\ExceptionHandler |处理全局捕获的异常 |
+|Commune\Chatbot\Contracts\ExceptionReporter |上报异常, 比如提交给 Sentry |
 |Commune\Chatbot\Contracts\EventDispatcher  |系统默认的事件机制 |
 |Psr\Log\LoggerInterface                    |系统默认的日志模块 |
 |Commune\Support\OptionRepo\Contracts\OptionRepository  |配置中心抽象层仓库 |

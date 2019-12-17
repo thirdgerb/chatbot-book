@@ -21,8 +21,6 @@
     * [第八课 : 意图与上下文记忆]
     * [第九课 : 定义多轮对话组件]
     * [第十课 : 渲染回复]
-* [组件化](/docs/components.md)
-* [使用NLU](/docs/nlu.md)
 * [搭建应用](/docs/app.md)
     *   [Hyperf 工作站](/docs/apps/studio.md)
     *   [微信公众号Bot](/docs/apps/wechat.md)
@@ -30,6 +28,8 @@
     *   [网页版Bot](/docs/apps/web.md)
     *   自定义开发
     *   多模态中控
+* [组件化](/docs/components.md)
+* [使用NLU](/docs/nlu.md)
 * [对话管理模块](/docs/dm/dialog-manager.md)
     *   [Session](/docs/dm/session.md)
     *   [Director](/docs/dm/Director.md)

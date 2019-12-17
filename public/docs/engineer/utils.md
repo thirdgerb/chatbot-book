@@ -89,7 +89,7 @@ class MyClass implements Commune\Chatbot\Blueprint\Conversation\RunningSpy
 用户 : /runningSpy
 机器人 :
 
-Commune\Chatbot\Framework\Predefined\SymfonyEventDispatcher 运行中实例共 1 个
+Commune\Chatbot\Framework\Impl\SymfonyEventDispatcher 运行中实例共 1 个
 Commune\Chatbot\Framework\Conversation\ConversationLoggerImpl 运行中实例共 1 个
 Commune\Chatbot\Framework\Conversation\ConversationImpl 运行中实例共 1 个
 Commune\Chatbot\App\Drivers\Demo\ArrayCache 运行中实例共 1 个

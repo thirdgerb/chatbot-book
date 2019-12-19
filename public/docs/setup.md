@@ -1,11 +1,10 @@
-
-# 快速启动
-
-
-可能您只是想尝鲜, 或者想用 CommuneChatbot 搭建一个完整的应用. 这里提供了两套做法.
+# 搭建应用
 
 
-## 尝鲜启动
+可能您只是想快速运行项目, 看以下功能; 或者想用 CommuneChatbot 搭建一个完整的应用. 这里提供了两套做法.
+
+
+## 1. 快速启动
 
 如果只是为了尝鲜, 直接使用底层框架 [Chatbot](https://github.com/thirdgerb/chatbot) 是最快捷的.
 
@@ -27,8 +26,7 @@
     php ./demo/console.php
 
 
-
-## 安装并运行工作站
+## 2. 安装并运行工作站
 
 项目使用 [swoole](https://swoole.com) + [hyperf](https://hyperf.io) 实现工作站, 提供协程服务端的全栈开发框架.
 
@@ -39,7 +37,7 @@
 *   redis 与 mysql 基础知识
 *   服务部署与治理相关知识
 
-### 安装项目
+### 2.1 安装项目
 
     // 用 composer 安装最新
     composer create-project commune/studio-hyperf
@@ -50,7 +48,7 @@
     // 安装依赖
     composer install
 
-### 直接运行 demo
+### 2.2 直接运行 demo
 
 工作站仍提供一个基于命令行, 不需要数据库的 demo, 运行方式如下:
 
@@ -58,7 +56,7 @@
 
 您也可以修改这个机器人的配置, 开发出自己的命令行机器人.
 
-### 配置数据库
+### 2.3 配置数据库
 
     // 复制环境变量文件.
     cp .env.example .env
@@ -85,6 +83,8 @@
     REDIS_PORT=6379
     REDIS_DB=0
 
+    CHATBOT_DEBUG=true           ## 是否开启 debug 模式
+
     # 默认 #whoyourdaddy 指令使用的 token 值, 用于在对话中获取管理员身份
     SUPERVISOR_TOKEN=
 
@@ -96,7 +96,6 @@
     CHAT_API_PORT=9505    ## http api 应用端口
 
     # 百度智能音箱服务端的独立配置
-    DUEROS_DEBUG=true           ## 是否开启 debug 模式
     DUEROS_PRIVATE_KEY=         ## duerOS 私钥文件路径, 不填则不会进行鉴权
     DUEROS_REDIS_HOST=localhost
     DUEROS_REDIS_AUTH=
@@ -104,7 +103,6 @@
     DUEROS_REDIS_DB=1           ## duerOS 应用使用的 redis 库, 用于隔离缓存
 
     # 微信公众号服务端的独立配置
-    WECHAT_DEBUG=true           ## 是否开启 debug 模式
     WECHAT_REDIS_HOST=localhost
     WECHAT_REDIS_AUTH=
     WECHAT_REDIS_PORT=6379
@@ -119,7 +117,7 @@
 
 在 .env 文件中定义的配置, 可以在代码中用 ``` env('WECHAT_APP_ID', ''); ``` 这样的方式获取. 详情见 [hyperf 环境变量](https://doc.hyperf.io/#/zh/config?id=环境变量)
 
-###  初始化数据库
+### 2.4 初始化数据库
 
 定义了数据库连接后, 需要执行命令以初始化数据库:
 
@@ -127,8 +125,15 @@
 
 更多指令请查看 [hyperf 数据库迁移](https://doc.hyperf.io/#/zh/db/migration)
 
+### 2.5 命令行测试
 
-###  启动服务
+工作栈提供了一个测试工具, 可以在命令行里查看对话. 需要运行:
+
+    php bin/hyperf.php commune:tinker
+
+tinker 机器人具体的配置在文件 ``` BASE_PATH/configs/autoload/commune.php ``` 中.
+
+### 2.6 启动服务
 
 工作站通过 [hyperf 的命令](https://doc.hyperf.io/#/zh/command) 来启动服务.
 
@@ -168,7 +173,7 @@
 在服务器上可以用[supervisor](https://doc.hyperf.io/#/zh/tutorial/supervisor) 之类的方式启动持久化的服务.
 
 
-###  提供 http 服务
+### 2.7 提供 http 服务
 
 duerOS, wechat, web, api 这类基于http协议的客户端, 可以在浏览器地址栏里输入 ```localhost:9501```  的方式直接访问 ( .env 文件配置了每个应用的端口号 ). 但这样显然无法对外提供服务.
 
@@ -208,7 +213,8 @@ duerOS, wechat, web, api 这类基于http协议的客户端, 可以在浏览器�
 
     }
 
-## 搭建真正的应用
+
+## 3. 搭建真正的应用
 
 以上只是启动一个机器人应用的简单说明. 真正搭建项目自带应用, 可参考以下文档:
 
@@ -218,8 +224,7 @@ duerOS, wechat, web, api 这类基于http协议的客户端, 可以在浏览器�
 
 相信在深入了解项目之后, 您能随意搭建出自己需要的对话机器人.
 
-
-## 服务部署与治理
+## 4. 服务部署与治理
 
 CommuneChatbot 项目实现了服务端的分布式一致性. 您可以为同一个机器人开启若干个服务程序. 这里涉及项目的迭代, 发布, 部署等各种技术; 此外作为微服务的单元, 还需要进行统一的服务化治理.
 
@@ -228,4 +233,5 @@ CommuneChatbot 项目实现了服务端的分布式一致性. 您可以为同一
 -   [hyperf 官方文档](https://doc.hyperf.io/)
 -   [swoole 官方文档](https://wiki.swoole.com/)
 
+## 5. 正式开发应用
 

@@ -1,6 +1,5 @@
 
 * [首页](/)
-* [快速启动](/docs/setup.md)
 * [核心概念](/docs/core-concepts/index.md)
     *   [对话机器人应用](/docs/core-concepts/chatbot-app.md)
     *   [对话机器人架构](/docs/core-concepts/structure.md)
@@ -21,7 +20,7 @@
     * [第八课 : 意图与上下文记忆]
     * [第九课 : 定义多轮对话组件]
     * [第十课 : 渲染回复]
-* [搭建应用](/docs/app.md)
+* [搭建应用](/docs/setup.md)
     *   [Hyperf 工作站](/docs/apps/studio.md)
     *   [微信公众号Bot](/docs/apps/wechat.md)
     *   [百度智能音箱Bot](/docs/apps/dueros.md)

@@ -608,7 +608,7 @@ class AffirmInt extends AbsCmdIntent implements Positive
 "情绪" (Emotion) 是 CommuneChatbot 执行比 Intent 更大粒度匹配时所用的策略.
 目前还在试用的阶段, 所以没有独立一节. 更具体的内容请查看 [Hearing API 关于情绪匹配的文档](/docs/dm/hearing.md).
 
-### 确保注册
+### 确保加载
 
 所有继承自 ```Commune\Chatbot\OOHost\Context\Intent\AbsCmdIntent``` 的意图, 都实现了 ```Commune\Chatbot\OOHost\Context\SelfRegister``` 接口.
 

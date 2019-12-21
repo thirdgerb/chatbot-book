@@ -1,6 +1,6 @@
 # Stage
 
-> 在深入了解 Stage 之前, 建议您先阅读 [多轮对话的生命周期](/docs/dm/lifecircle.md) 和 [Context文档](/doc/dm/context.md).
+> 在深入了解 Stage 之前, 建议您先阅读 [多轮对话的生命周期](/docs/dm-lifecircle.md) 和 [Context文档](/doc/dm/context.md).
 
 ## 1. 关于上下文逻辑
 
@@ -513,7 +513,7 @@ public function __onStage(Stage $stage) : Navigator
 }
 ```
 
-```Dialog::replace()``` 方法可以用指定的 Context 替换掉当前的 ```Node```, ```Thread``` 甚至 ```Process```, 需要您了解 [多轮对话生命周期](/docs/dm/lifecircle.md), 具体使用方法请查阅源代码.
+```Dialog::replace()``` 方法可以用指定的 Context 替换掉当前的 ```Node```, ```Thread``` 甚至 ```Process```, 需要您了解 [多轮对话生命周期](/docs/dm-lifecircle.md), 具体使用方法请查阅源代码.
 
 
 ### 5.3 Stage 可回溯跳转
@@ -834,7 +834,7 @@ Stage 提供 ```Stage::component()``` 方法, 允许把 Stage 的逻辑封装到
 
 ## 9. 子对话
 
-在 [多轮对话生命周期](/docs/dm/lifecircle.md) 中, 我们介绍了 "子对话与多任务调度" 的概念. 这里不再重复.
+在 [多轮对话生命周期](/docs/dm-lifecircle.md) 中, 我们介绍了 "子对话与多任务调度" 的概念. 这里不再重复.
 
 完整的子对话管理可以通过 Stage 来定义. 示例如下:
 

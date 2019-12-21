@@ -2,7 +2,7 @@
 
 > 多轮对话的上下文, 本项目称之为 Context (中文为 "上下文" 或 "语境")
 >
-> 开始这一节前, 希望您已经通过 [多轮对话生命周期](/docs/dm/lifecircle.md) 这一节了解了 CommuneChatbot 的复杂多轮对话工程模型.
+> 开始这一节前, 希望您已经通过 [多轮对话生命周期](/docs/dm-lifecircle.md) 这一节了解了 CommuneChatbot 的复杂多轮对话工程模型.
 
 在 CommuneChatbot 项目中, 多轮对话上下文被封装成 Context 对象.
 理论上无限轮次的多轮对话也可以定义到一个 Context 对象中, 但又可以分形式地分拆成若干 Context 的嵌套,
@@ -217,7 +217,7 @@ ContextDefinition 通过 "ContextName" (语境的名称) 唯一区分, 在每一
 
 #### 上下文轨迹
 
-上下文轨迹记录了上下文的位置, 切换的轨迹, 回调的目标等. 相关调度的工程模型可以查看 [多轮对话生命周期文档](/docs/dm/lifecircle.md); 涉及到由 Node, Thread, Process 等构成的 History 栈结构.
+上下文轨迹记录了上下文的位置, 切换的轨迹, 回调的目标等. 相关调度的工程模型可以查看 [多轮对话生命周期文档](/docs/dm-lifecircle.md); 涉及到由 Node, Thread, Process 等构成的 History 栈结构.
 
 上下文轨迹仅仅在会话的生命周期中有效, 因此存储在 Session 对象中.
 

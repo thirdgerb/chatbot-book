@@ -205,7 +205,7 @@ return [
 
 ### 3.3 直接通过容器注册服务
 
-在一些特殊的情况下, 比如在 [组件](/docs/components.md) 中, 可以获取到系统的根应用 ([Commune\Chatbot\Blueprint\Application](https://github.com/thirdgerb/chatbot/blob/master/src/Chatbot/Blueprint/Application.php)), 也可以通过它来直接注册服务 :
+在一些特殊的情况下, 比如在 [组件](/docs/components/index.md) 中, 可以获取到系统的根应用 ([Commune\Chatbot\Blueprint\Application](https://github.com/thirdgerb/chatbot/blob/master/src/Chatbot/Blueprint/Application.php)), 也可以通过它来直接注册服务 :
 
 ```php
 

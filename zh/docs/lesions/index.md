@@ -14,7 +14,7 @@
 
 如果想要进一步深入了解, 您可能需要 :
 
-- [多轮对话生命周期](/docs/dm/lifecircle.md)
+- [多轮对话生命周期](/docs/dm-lifecircle.md)
 - [定义 Context](/docs/dm/context.md)
 - [定义 Stage](/docs/dm/stage.md)
 - [定义 Intent](/docs/dm/intent.md)

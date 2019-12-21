@@ -232,7 +232,7 @@ CommuneChatbot 默认支持 ICU, 这需要安装了 [PHP 扩展 intl](https://ww
 
 ### 3.5 通过 ComponentOption 加载更多资源
 
-所有通过 [ComponentOption](/docs/components.md) 注册的组件, 都可以预加载自己需要的 translation 资源文件.
+所有通过 [ComponentOption](/docs/components/index.md) 注册的组件, 都可以预加载自己需要的 translation 资源文件.
 
 ```php
 

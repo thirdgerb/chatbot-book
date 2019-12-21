@@ -239,7 +239,7 @@ CommuneChatbot 作为机器人服务端, 可能只是整个大型应用的一环
 
 "场景" 概念决定了机器人用哪个 "根语境" (root context) 来响应用户, 可以通过 ```MessageRequest::getScene()``` 方法来定义.
 
-更多相关信息请看 [多轮对话生命周期](/docs/dm/lifecircle.md).
+更多相关信息请看 [多轮对话生命周期](/docs/dm-lifecircle.md).
 
 
 ## 4. 回复渲染

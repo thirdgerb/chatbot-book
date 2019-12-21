@@ -211,7 +211,7 @@ return [
 
 ## 8. 注册组件 ComponentOption 单例
 
-ComponentOption 是一种特殊的```单例 Option```, 它既是一个独立组件的配置, 同时又包含了```ComponentOption::bootstrap()``` 方法, 会在项目启动的时候运行. 具体情况请查看[组件化开发文档](/docs/components.md) .
+ComponentOption 是一种特殊的```单例 Option```, 它既是一个独立组件的配置, 同时又包含了```ComponentOption::bootstrap()``` 方法, 会在项目启动的时候运行. 具体情况请查看[组件化开发文档](/docs/components/index.md) .
 
 这类配置同样需要注册到 ```Commune\Chatbot\Config\ChatbotConfig::$components``` 数组中. 绑定方式与 ```Commune\Chatbot\Config\ChatbotConfig::$configBindings``` 类似. 并且同样作为```进程级单例```可以依赖注入.
 

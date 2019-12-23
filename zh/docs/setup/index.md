@@ -1,6 +1,15 @@
 # 搭建应用
 
 
+- [安装工作站](/docs/setup/studio.md)
+- [搭建机器人 API](/docs/setup/api.md)
+- [搭建微信公众号 bot](/docs/setup/wechat.md)
+- [搭建百度音箱 bot](/docs/setup/web.md)
+- [搭建 web bot](/docs/setup/web.md)
+
+
+
+
 可能您只是想快速运行项目, 看以下功能; 或者想用 CommuneChatbot 搭建一个完整的应用. 这里提供了两套做法.
 
 

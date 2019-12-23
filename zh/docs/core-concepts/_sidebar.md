@@ -7,6 +7,7 @@
     *   [工程化还是机器人学习](/docs/core-concepts/engeering-or-machine-learning.md)
     *   [自然语言单元](/docs/core-concepts/nlu.md)
     *   [多模态中控](/docs/core-concepts/multimodal.md)
+    *   [对话式视频社交应用](/docs/core-concepts/cva.md)
 * [应用生命周期 ★](/docs/app-lifecircle.md)
 * [对话生命周期 ★](/docs/dm-lifecircle.md)
 * [快速教程 ★](/docs/lesions/index.md)

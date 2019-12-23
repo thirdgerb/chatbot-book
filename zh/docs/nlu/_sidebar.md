@@ -10,8 +10,8 @@
     - [本地语料库](/docs/nlu/corpus.md)
     - [管理 NLU 服务](/docs/nlu/manager.md)
     - [使用 Rasa 搭建 NLU](/docs/nlu/rasa.md)
-* [对话管理模块](/docs/dm/index.md)
 * [工程模块](/docs/engineer/index.md)
+* [对话管理模块](/docs/dm/index.md)
 * [组件化](/docs/components/index.md)
 
 

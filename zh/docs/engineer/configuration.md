@@ -132,7 +132,31 @@ assert($test->option2 === 'test');
 * 自带```validate```方法, 可以校验配置的合法性
 * 可以作为单例绑定到```IoC容器```, 于是可以实现```依赖注入```
 
-### 5.2 Option 的单例与枚举值
+### 5.2 关联结构
+
+Option 配置是可以相互嵌套的. 定义了嵌套关系后, 传入数组给 Option,
+会自动将某个属性变成另一个 Option.
+定义时需要用 ```Option::$associations``` 属性 :
+
+```php
+class StoryOption extends Option
+{
+
+    // 定义关联结构
+    protected static $associations = [
+
+        // 定义 1 对 1 的关联结构
+        'rootStorage' => MetaHolderOption::class,
+
+        // 定义 1 对 n 的关联结构, 在键名后面加上 []
+        'storagePipeline[]' => MetaHolderOption::class,
+    ];
+
+    ...
+}
+```
+
+### 5.3 Option 的单例与枚举值
 
 定义一个```Commune\Support\Option```允许单例和枚举值两种形式.
 

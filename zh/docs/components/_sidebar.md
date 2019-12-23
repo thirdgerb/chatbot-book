@@ -5,12 +5,10 @@
 * [快速教程 ★](/docs/lesions/index.md)
 * [搭建应用](/docs/setup/index.md)
 * [使用自然语言单元](/docs/nlu/index.md)
-* [对话管理模块](/docs/dm/index.md)
 * [工程模块](/docs/engineer/index.md)
+* [对话管理模块](/docs/dm/index.md)
 * [组件化](/docs/components/index.md)
     - [定义组件](/docs/components/option.md)
     - [简单闲聊组件](/docs/components/simple-chat.md)
     - [简单问答组件](/docs/components/simple-wiki.md)
-    - [文字互动游戏组件](/docs/components/story.md)
-
-
+    - [文字冒险游戏](/docs/components/story.md)

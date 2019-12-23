@@ -10,8 +10,8 @@
     - [搭建百度音箱 bot](/docs/setup/web.md)
     - [搭建 web bot](/docs/setup/web.md)
 * [使用自然语言单元](/docs/nlu/index.md)
-* [对话管理模块](/docs/dm/index.md)
 * [工程模块](/docs/engineer/index.md)
+* [对话管理模块](/docs/dm/index.md)
 * [组件化](/docs/components/index.md)
 
 

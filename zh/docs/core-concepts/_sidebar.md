@@ -1,10 +1,10 @@
 
 * [首页](/)
-* [核心概念](/docs/core-concepts/index.md)
+* [核心思路](/docs/core-concepts/index.md)
     *   [对话机器人应用](/docs/core-concepts/chatbot-app.md)
     *   [对话机器人架构](/docs/core-concepts/structure.md)
     *   [复杂多轮对话问题](/docs/core-concepts/complex-conversation.md)
-    *   [工程化还是机器人学习](/docs/core-concepts/engeering-or-machine-learning.md)
+    *   [工程化还是机器人学习](/docs/core-concepts/e-or-ml.md)
     *   [自然语言单元](/docs/core-concepts/nlu.md)
     *   [多模态中控](/docs/core-concepts/multimodal.md)
     *   [对话式视频社交应用](/docs/core-concepts/cva.md)

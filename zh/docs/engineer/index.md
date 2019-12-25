@@ -20,7 +20,7 @@ CommuneChatbot 项目有两个核心功能:
 *   [Conversation](/docs/engineer/conversation.md)
 *   [消息体系](/docs/engineer/messages.md)
 *   [渲染回复](/docs/engineer/replies.md)
-*   [多平台适配](/docs/engineer/platform-adpater.md)
+*   [多平台适配](/docs/engineer/platform-adapter.md)
 *   [管道](/docs/engineer/pipeline.md)
 *   [事件机制](/docs/engineer/dispatcher.md)
 *   [权限机制](/docs/engineer/abbilities.md)

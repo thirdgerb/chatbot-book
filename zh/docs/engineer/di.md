@@ -379,13 +379,13 @@ CommuneChatbot 的工作站 [studio-hyperf](https://github.com/thirdgerb/studio-
 |Psr\Container\ContainerInterface   |```Hyperf```的依赖注入容器|
 |Commune\Hyperf\Foundations\ProcessContainer::HYPERF_CONTAINER_ID | 容器绑定的别名 |
 |"hyperf.container"                 |与上相同|
-|Commune\Hyperf\Foundations\Options\HyperfBotOption|```CommuneChatbot```在```Hyperf```中的配置|
+|Commune\Hyperf\Foundations\Options\AppServerOption|```CommuneChatbot```在```Hyperf```中的配置|
 |Hyperf\Guzzle\ClientFactory        |```Hyperf```生成```guzzle```协程客户端的工厂|
 |Hyperf\Redis\RedisFactory          |```Hyperf```获取```redis```协程客户端的工厂|
 |Hyperf\Database\ConnectionResolverInterface |```Hyperf```数据库连接的协程客户端|
 
 
-如果需要从```Hyperf```框架中继承更多服务 (只能继承单例) 到```CommuneChatbot```, 则可以在配置```Commune\Hyperf\Foundations\Options\HyperfBotOption``` 中定义```shares``` 数组.
+如果需要从```Hyperf```框架中继承更多服务 (只能继承单例) 到```CommuneChatbot```, 则可以在配置```Commune\Hyperf\Foundations\Options\AppServerOption``` 中定义```shares``` 数组.
 
 这个数组里的单例, 会被```CommuneChatbot``` 的进程级容器所继承.
 

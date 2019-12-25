@@ -19,7 +19,7 @@ $app->getServer()->run();
 CommuneChatbot 使用了基于 ```Commune\Support\Option``` 实现的配置体系, 简单而言就是将配置数组, 封装到一个配置对象中; 从而将弱类型的数组式调用, 变成强类型的对象式调用. 具体用法在下文有介绍.
 
 
-## 2. 工作站配置文件
+## 2. 服务端实例配置
 
 在```CommuneChatbot```的工作站[studio-hyperf](https://github.com/thirdgerb/studio-hyperf) 中, 机器人的配置基于[Hyperf 的配置体系](https://hyperf.wiki/#/zh/config).
 
@@ -32,7 +32,7 @@ return [
     'tinker' => include BASE_PATH . '/config/commune/chatbots/tinker.php',
 
     // 可以通过 commune:start 命令启动的, 真实客户端.
-    // 配置内容请查看 Commune\Hyperf\Foundations\Options\HyperfBotOption
+    // 配置内容请查看 Commune\Hyperf\Foundations\Options\AppServerOption
     'apps' => [
         // 默认的tcp端. 通常供测试用.
         'tcp' => include BASE_PATH . '/config/commune/apps/tcp.php',
@@ -63,7 +63,7 @@ CommuneChatbot 的基本设计思路, 就是同一个机器人可以在多个端
 
 这些配置综合起来, 定义在目录 ```BASE_PATH/config/commune/apps/``` 路径下.
 
-每个文件的数组结构, 都对应 option 类 ```Commune\Hyperf\Foundations\Options\HyperfBotOption```, 查看该类可以具体了解.
+每个文件的数组结构, 都对应 option 类 ```Commune\Hyperf\Foundations\Options\AppServerOption```, 查看该类可以具体了解.
 
 运行 ```php bin/hyperf.php commune:start [appName]``` 实际读取的是这部分配置. 详情可查看```Commune\Hyperf\Commands\StartApp```.
 
@@ -190,7 +190,7 @@ assert($config->getId() === 'test');
 
 - ```Commune\Chatbot\Config\ChatbotConfig``` : 对话机器人所有功能模块的配置
 - ```Commune\Chatbot\Config\Children\OOHostConfig``` : 多轮对话内核的配置
-- ```Commune\Hyperf\Foundations\Options\HyperfBotOption``` : ```studio-hyperf```启动应用的基本配置.
+- ```Commune\Hyperf\Foundations\Options\AppServerOption``` : ```studio-hyperf```启动应用的基本配置.
 
 请查阅相关类文件了解详细配置内容.
 

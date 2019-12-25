@@ -22,13 +22,15 @@
       mermaid.initialize({ startOnLoad: false });
 
       window.$docsify = {
-          name: 'CommuneChatbot手册',
-          repo: 'https://github.com/thirdgerb/chatbot-book/',
+          name: 'CommuneChatbot',
+          fallbackLanguages: ['zh-cn'],
+          repo: 'thirdgerb/chatbot-book',
           loadSidebar: true,
           subMaxLevel: 2,
-          // alias: {
-          //     '/.*/_sidebar.md': '/_sidebar.md'
-          // },
+          alias: {
+              '/' : '/zh-cn/prologue/index.md',
+              //'/.*/_sidebar.md': '/_sidebar.md'
+          },
           markdown: {
               renderer: {
                   code: function(code, lang) {
@@ -41,6 +43,16 @@
                   }
               }
           },
+          search: {
+              depth: 6,
+              noData: {
+                  '/zh-cn/': '没有找到结果!',
+              },
+              paths: 'auto',
+              placeholder: {
+                  '/zh-cn/': '输入关键词搜索',
+              }
+          },
           // plugins: [
           //     EditOnGithubPlugin.create(
           //         "",
@@ -50,5 +62,6 @@
           // ]
       }
   </script>
+  <script src="//unpkg.com/docsify/lib/plugins/search.min.js"></script>
 </body>
 </html>

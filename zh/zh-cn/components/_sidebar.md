@@ -1,4 +1,7 @@
-* [前言](/zh-cn/prologue/index.md)
+* __前言__
+    - [项目介绍](/zh-cn/prologue/index.md)
+    - [发布版本](/zh-cn/prologue/releases.md)
+    - [应用](/zh-cn/prologue/awesome.md)
 * [核心思路](/zh-cn/core-concepts/index.md)
 * [快速教程 ★](/zh-cn/lesions/index.md)
 * [应用生命周期 ★](/zh-cn/app-lifecircle.md)
@@ -8,5 +11,7 @@
 * [工程模块](/zh-cn/engineer/index.md)
 * [对话管理模块](/zh-cn/dm/index.md)
 * [组件化](/zh-cn/components/index.md)
-
-
+    - [定义组件](/zh-cn/components/option.md)
+    - [简单闲聊组件](/zh-cn/components/simple-chat.md)
+    - [简单问答组件](/zh-cn/components/simple-wiki.md)
+    - [文字冒险游戏](/zh-cn/components/story.md)

@@ -13,12 +13,12 @@
     - [运行应用](/zh-cn/setup/run.md)
     - [开发对话与服务](/zh-cn/setup/develop.md)
     - [搭建机器人 API](/zh-cn/setup/api.md)
-    - [搭建微信公众号 bot](/zh-cn/setup/wechat.md)
-    - [搭建百度音箱 bot](/zh-cn/setup/web.md)
     - [搭建 web bot](/zh-cn/setup/web.md)
-* [使用自然语言单元](/zh-cn/nlu/index.md)
+    - [搭建微信公众号 bot](/zh-cn/setup/wechat.md)
+    - [搭建百度音箱 bot](/zh-cn/setup/dueros.md)
 * [工程模块](/zh-cn/engineer/index.md)
 * [对话管理模块](/zh-cn/dm/index.md)
+* [使用自然语言单元](/zh-cn/nlu/index.md)
 * [组件化](/zh-cn/components/index.md)
 
 

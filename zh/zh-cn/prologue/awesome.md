@@ -16,10 +16,10 @@
 
 ### 平台适配
 
-- 网页版组件 : ```Commune\Platform\Web\WebComponent```
-- API版组件 : ```Commune\Platform\WebApi\WebApiComponent```
-- 微信公众号组件 : ```Commune\Platform\Wechat\WechatComponent```
-- 小度音箱组件 : ```Commune\Platform\DuerOS\DuerOSComponent```
+- [网页版组件](/zh-cn/setup/web.md) : ```Commune\Platform\Web\WebComponent```
+- [机器人API组件](/zh-cn/setup/api.md) : ```Commune\Platform\WebApi\WebApiComponent```
+- [微信公众号组件](/zh-cn/setup/wechat.md) : ```Commune\Platform\Wechat\WechatComponent```
+- [百度智能音箱组件](/zh-cn/setup/dueros.md) : ```Commune\Platform\DuerOS\DuerOSComponent```
 
 ### 多轮对话
 
@@ -32,7 +32,7 @@
 
 ### 业务
 
-- 对话冒险游戏 : ```Commune\Components\Story\StoryComponent```
-- 简单闲聊 : ```Commune\Components\SimpleChat\SimpleChatComponent```
-- 简单问答 : ```Commune\Components\SimpleWiki\SimpleWikiComponent```
+- [对话冒险游戏](/zh-cn/components/story.md) : ```Commune\Components\Story\StoryComponent```
+- [简单闲聊](/zh-cn/components/simple-chat.md) : ```Commune\Components\SimpleChat\SimpleChatComponent```
+- [简单问答](/zh-cn/components/simple-wiki.md) : ```Commune\Components\SimpleWiki\SimpleWikiComponent```
 

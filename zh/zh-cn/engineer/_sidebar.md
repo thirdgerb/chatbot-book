@@ -7,7 +7,6 @@
 * [应用生命周期 ★](/zh-cn/app-lifecircle.md)
 * [对话生命周期 ★](/zh-cn/dm-lifecircle.md)
 * [搭建应用](/zh-cn/setup/index.md)
-* [使用自然语言单元](/zh-cn/nlu/index.md)
 * [工程模块](/zh-cn/engineer/index.md)
     *   [双容器与依赖注入](/zh-cn/engineer/di.md)
     *   [配置体系](/zh-cn/engineer/configuration.md)
@@ -24,4 +23,5 @@
     *   [异常管理](/zh-cn/engineer/exceptions.md)
     *   [更多工具类](/zh-cn/engineer/utils.md)
 * [对话管理模块](/zh-cn/dm/index.md)
+* [使用自然语言单元](/zh-cn/nlu/index.md)
 * [组件化](/zh-cn/components/index.md)

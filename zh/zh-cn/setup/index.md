@@ -22,7 +22,8 @@ CommuneChatbot 的核心项目是 [commune/chatbot](http://packagist.org/package
 系统自带几个实际可用的 Demo :
 
 - [搭建机器人 API](/zh-cn/setup/api.md)
-- [搭建微信公众号 bot](/zh-cn/setup/wechat.md)
-- [搭建百度音箱 bot](/zh-cn/setup/web.md)
 - [搭建 web bot](/zh-cn/setup/web.md)
+- [搭建微信公众号 bot](/zh-cn/setup/wechat.md)
+- [搭建百度音箱 bot](/zh-cn/setup/dueros.md)
 
+更多应用请查看 [关联应用](/zh-cn/prologue/awesome.md).

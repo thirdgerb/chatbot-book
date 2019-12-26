@@ -7,14 +7,14 @@
 * [应用生命周期 ★](/zh-cn/app-lifecircle.md)
 * [对话生命周期 ★](/zh-cn/dm-lifecircle.md)
 * [搭建应用](/zh-cn/setup/index.md)
+* [工程模块](/zh-cn/engineer/index.md)
+* [对话管理模块](/zh-cn/dm/index.md)
 * [使用自然语言单元](/zh-cn/nlu/index.md)
     - [封装 NLUService](/zh-cn/nlu/service.md)
     - [注册 NLU 中间件](/zh-cn/nlu/middleware.md)
     - [本地语料库](/zh-cn/nlu/corpus.md)
     - [管理 NLU 服务](/zh-cn/nlu/manager.md)
     - [使用 Rasa 搭建 NLU](/zh-cn/nlu/rasa.md)
-* [工程模块](/zh-cn/engineer/index.md)
-* [对话管理模块](/zh-cn/dm/index.md)
 * [组件化](/zh-cn/components/index.md)
 
 

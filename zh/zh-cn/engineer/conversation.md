@@ -19,7 +19,7 @@ Conversation 的所有方法定义, 请查看 ```Commune\Chatbot\Blueprint\Conve
 
 本项目可以用 ```Commune\Chatbot\Blueprint\Conversation\Conversation::isAbleTo(string $abilityName)``` 的形式判断用户是否拥有某种权限.
 
-具体请看[权限机制文档](docs/engineer/abbilities.md).
+具体请看[权限机制文档](/zh-cn/engineer/abbilities.md).
 
 
 ## ConversationLogger

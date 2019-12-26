@@ -7,7 +7,6 @@
 * [应用生命周期 ★](/zh-cn/app-lifecircle.md)
 * [对话生命周期 ★](/zh-cn/dm-lifecircle.md)
 * [搭建应用](/zh-cn/setup/index.md)
-* [使用自然语言单元](/zh-cn/nlu/index.md)
 * [工程模块](/zh-cn/engineer/index.md)
 * [对话管理模块](/zh-cn/dm/index.md)
     *   [Session](/zh-cn/dm/session.md)
@@ -21,6 +20,7 @@
     *   [Questions](/zh-cn/dm/questions.md)
     *   [Hearing](/zh-cn/dm/hearing.md)
     *   [Commands](/zh-cn/dm/commands.md)
+* [使用自然语言单元](/zh-cn/nlu/index.md)
 * [组件化](/zh-cn/components/index.md)
 
 

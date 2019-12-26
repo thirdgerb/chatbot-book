@@ -37,7 +37,7 @@ CommuneChatbot 有许多内部的功能模块, 如 [配置中心抽象层](/zh-c
 
 具体的做法有以下几步:
 
-### 创建应用配置
+### 创建应用
 
 机器人 API 也需要在```BASE_PATH/config/autoload/commune.php``` 文件中创建.
 
@@ -68,7 +68,8 @@ php bin/hyperf.php commune:start api
 
 ### 服务端配置
 
-机器人 API 的服务端配置仍然是 ```Commune\Hyperf\Foundations\Options\AppServerOption```, 配置时应考虑作为一个 MVC 框架需要关注的细节.
+服务端配置请参考```BASE_PATH/config/commune/apps/api.php```.
+配置结构是```Commune\Hyperf\Foundations\Options\AppServerOption```.
 
 ```php
 

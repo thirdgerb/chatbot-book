@@ -81,7 +81,8 @@ return [
 
 ### 服务端配置
 
-公众号的服务端配置仍然是 ```Commune\Hyperf\Foundations\Options\AppServerOption```.
+服务端配置请参考```BASE_PATH/config/commune/apps/web.php```.
+配置结构是```Commune\Hyperf\Foundations\Options\AppServerOption```.
 
 最重要的是 servers 的 callback, 需要用 ```Commune\Platform\Wechat\Servers\OfficialAccountServer``` 类来响应 ```SwooleEvent::ON_REQUEST```.
 

@@ -2,6 +2,7 @@
     - [项目介绍](/zh-cn/prologue/index.md)
     - [发布版本](/zh-cn/prologue/releases.md)
     - [应用](/zh-cn/prologue/awesome.md)
+    - [FAQ](/zh-cn/prologue/faq.md)
 * [核心思路](/zh-cn/core-concepts/index.md)
     *   [对话机器人应用](/zh-cn/core-concepts/chatbot-app.md)
     *   [对话机器人架构](/zh-cn/core-concepts/structure.md)

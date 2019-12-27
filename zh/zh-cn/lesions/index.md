@@ -1,6 +1,9 @@
 # 快速教程
 
-为了方便您快速了解和掌握多轮对话的开发方式, 这里提供了一系列简明的课程. 走完这个流程您能基本了解 CommuneChatbot 多轮对话的开发方式.
+为了方便您快速了解和掌握多轮对话的开发方式, 这里提供了一系列简明的课程.
+在开始之前, 您可能需要阅读 [多轮对话生命周期](/zh-cn/dm-lifecircle.md) 这篇文章.
+
+以下是正式的内容:
 
 * [1. hello world](/zh-cn/lesions/helloworld.md)
 * [2. 定义单轮对话](/zh-cn/lesions/single-turn-convo.md)
@@ -13,7 +16,6 @@
 
 如果想要进一步深入了解, 您可能需要 :
 
-- [多轮对话生命周期](/zh-cn/dm-lifecircle.md)
 - [定义 Context](/zh-cn/dm/context.md)
 - [定义 Stage](/zh-cn/dm/stage.md)
 - [定义 Intent](/zh-cn/dm/intent.md)

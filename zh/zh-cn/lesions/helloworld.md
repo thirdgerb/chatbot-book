@@ -1,4 +1,4 @@
-# 第一课, hello world
+# 第一节, hello world
 
 
 ## 检查依赖
@@ -8,14 +8,9 @@
 必要依赖:
 
 * php版本 ```>= 7.2``` 
-* composer 
-* 必要扩展 (最好有所有常用扩展) 
-    * mb_string
-    * SPL
-    * json
-    * Reflection
-* 建议扩展:
-    * php-intl + ICU 以实现文本国际化
+* Composer
+* 必要扩展
+    * [intl (用于国际化)](https://www.php.net/manual/en/intro.intl.php)
 
 强烈建议使用一个优秀的 PHP IDE 来开发, 例如 [phpstorm](https://www.jetbrains.com/zh/phpstorm/) . 因为本项目针对 IDE 做了大量的优化, 基于 IDE 可以极大地减少写代码和查阅 API 的时间.
 
@@ -50,43 +45,43 @@
 我们将用这个文件定义第一个上下文语境 (Context). 复制以下代码到 HelloWorld.php :
 
 ```php
-    <?php
-    namespace Commune\Demo;
+<?php
+namespace Commune\Demo;
 
-    use Commune\Chatbot\OOHost\Context\Depending;
-    use Commune\Chatbot\OOHost\Context\Exiting;
-    use Commune\Chatbot\OOHost\Context\OOContext;
-    use Commune\Chatbot\OOHost\Context\Stage;
-    use Commune\Chatbot\OOHost\Dialogue\Dialog;
-    use Commune\Chatbot\OOHost\Directing\Navigator;
-    use Commune\Chatbot\Blueprint\Message\Message;
+use Commune\Chatbot\OOHost\Context\Depending;
+use Commune\Chatbot\OOHost\Context\Exiting;
+use Commune\Chatbot\OOHost\Context\OOContext;
+use Commune\Chatbot\OOHost\Context\Stage;
+use Commune\Chatbot\OOHost\Dialogue\Dialog;
+use Commune\Chatbot\OOHost\Directing\Navigator;
+use Commune\Chatbot\Blueprint\Message\Message;
 
-    /**
-     * 创建 hello world 文件
-     */
-    class HelloWorld extends OOContext
+/**
+ * 创建 hello world 文件
+ */
+class HelloWorld extends OOContext
+{
+    public static function __depend(Depending $depending): void
     {
-        public static function __depend(Depending $depending): void
-        {
-        }
-
-        public function __exiting(Exiting $listener): void
-        {
-        }
-
-        public function __onStart(Stage $stage): Navigator
-        {
-            // 任何时候都执行的逻辑
-            $stage->always(function(Dialog $dialog){
-                // dialog 说 hello world
-                $dialog->say()->info('hello world!');
-            });
-
-            // 等待用户下一次输入
-            return $stage->dialog->wait();
-        }
-
     }
+
+    public function __exiting(Exiting $listener): void
+    {
+    }
+
+    public function __onStart(Stage $stage): Navigator
+    {
+        // 任何时候都执行的逻辑
+        $stage->always(function(Dialog $dialog){
+            // dialog 说 hello world
+            $dialog->say()->info('hello world!');
+        });
+
+        // 等待用户下一次输入
+        return $stage->dialog->wait();
+    }
+
+}
 ```
 
 这样就完成了机器人最初的定义.
@@ -129,11 +124,13 @@
 
 ## 关于场景
 
-CommuneChatbot 有一个 "场景" (scene) 的概念. 简单来说, 同一个机器人, 从不同的 "场景" 进入, 可以指定不同的 "语境" (Context) 来应答.
+CommuneChatbot 有一个 "场景" (scene) 的概念.
+简单来说, 同一个机器人, 从不同的 "场景" 进入, 可以指定不同的 "语境" (Context) 来应答.
 
-默认的场景是```root```, 所以运行命令 ```php demo/console.php``` 不需要传入场景名称.
+默认的场景是```rootContext```,
+所以运行命令 ```php demo/console.php``` 不需要传入场景名称.
 
 当执行 ```php demo/console.php test``` 时, 就进入了 ```test``` 场景, 这时便启动了之前注册的 ```Commune\Demo\HelloWorld``` 语境.
 
 
-## [下一课 : 定义单轮对话](/zh-cn/lesions/single-turn-convo.md)
+<big>[下一节 : 定义单轮对话](/zh-cn/lesions/single-turn-convo.md)</big>

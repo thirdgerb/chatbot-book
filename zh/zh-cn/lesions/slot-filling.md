@@ -1,16 +1,23 @@
-# 第四课 : 填槽型多轮对话
+# 第四节 : 填槽型多轮对话
 
-现在主流的多轮对话机器人, 在实现一阶多轮对话时采取的是 "填槽" (slot-filling) 的模式, 又称之为 "任务型多轮对话". 
+现在主流的多轮对话机器人,
+在实现一阶多轮对话时采取的是 "填槽" (slot-filling) 的模式,
+又称之为 "任务型多轮对话".
 
-简单而言, 机器人执行一个任务 (比如查询天气) 时需要输入若干参数, 缺失的参数就称之为 "槽位" (slot). 如果是在浏览器上, 通常会做成一个表单, 一次提交并执行; 而对话则不同, 需要反复引导用户输入. 
+简单而言, 机器人执行一个任务 (比如查询天气) 时需要输入若干参数,
+缺失的参数就称之为 "槽位" (slot).
+如果是在浏览器上, 通常会做成一个表单, 一次提交并执行;
+而对话则不同, 需要反复引导用户输入.
 
-```CommuneChatbot``` 的多轮对话设计, 是面向状态的, 而不是面向任务的. 所以不存在"槽位" 的设计. 然而也可以用 ```Context``` (上下文语境) 的 ```Stage``` (单轮对话) 的方式模拟 "填槽", 为每一个 "槽位" 提供一个独立的 ```Stage```, 通过可循环的单轮对话来完成参数的引导, 校验与退出. 
- 
-而且任务也不是填完槽后一次执行完, 在执行任务过程中, 还可以反复与用户交互. 任务型多轮对话的终点 (endpoint) 通常对应 ```Context``` 的起点 (```__onStart```).
+CommuneChatbot 的多轮对话设计, 是面向状态的, 而不是面向任务的.
+所以不存在"槽位" 的设计.
+然而也可以用 ```Context``` (上下文语境) 的 ```Stage``` (单轮对话) 的方式模拟 "填槽",
+为每一个 "槽位" 提供一个独立的 ```Stage```, 通过可循环的单轮对话来完成参数的引导, 校验与退出.
 
-
-填槽型的任务型对话, 在 ```CommuneChatbot``` 中还有更合适的机制来实现, 那就是 ```dependOn + Entity``` , 可以定义一个 ```Context``` 依赖哪些 ```Entity``` (可以是一个参数, 或者另一个 ```Context``` ), 只有这些 ```Entity``` 都有合法值的情况下, 才进入 ```__onStart``` 方法.
-
+大多数填槽型对话, 获得所有参数之后一次性执行任务, 就结束了多轮对话.
+CommuneChatbot 执行任务可以有若干个环节,
+执行过程中仍然可以反复和用户互动.
+"填槽" (slot-filling) 的终点, 通常对应 ```Context``` 的起点 (```__onStart```).
 
 ## 创建 UserInfo 测试用例
 
@@ -49,14 +56,6 @@ class UserInfo extends OOContext
         return 'demo.lesions.user-info';
     }
 
-    public function __exiting(Exiting $listener): void
-    {
-    }
-
-    public static function __depend(Depending $depending): void
-    {
-    }
-
     public function __onStart(Stage $stage): Navigator
     {
         return $stage->buildTalk()
@@ -66,14 +65,19 @@ class UserInfo extends OOContext
 }
 ```
 
-注意, 我们这次定义了 ```Context::DESCRIPTION``` 常量, 作为语境的简介; 同时重写了 ```Context::getContextName()``` 方法, 以定义我们自己想要的语境名称. (默认值是将类的命名空间, 映射为用 '.' 取代 '\\' 的字符串)
+注意, 我们这次定义了 ```Context::DESCRIPTION``` 常量, 作为语境的简介; 同时重写了 ```Context::getContextName()``` 方法, 以定义我们自己想要的语境名称.
 
 ## 将 Context 主动注册到系统
 
-```Context``` (上下文语境) 不会自动注册到系统中. 所以我们需要先告诉机器人系统, 要主动加载该目录下的```Context```:
+[Context](/zh-cn/dm/context.md) (上下文语境) 不会自动注册到系统中(见 [Registrar](/zh-cn/dm/registrar.md)).
+所以我们需要先告诉系统, 要主动扫描该目录下的```Context``` 进行注册.
+
+这需要先修改机器人配置文件 ```BASE_PATH/configs/config.php```.
 
 ```php
-    // 修改文件 BASE_PATH/configs/config.php 中的代码
+
+return [
+    ...
 
     'host' => [
 
@@ -96,12 +100,14 @@ class UserInfo extends OOContext
             // 用 depend 定义的一阶对话
             'userInfo' => 'demo.lesions.user-info',
         ],
+
+        ...
+
+    ],
+];
 ```
 
-
-然后执行 ```php demo/console.php userInfo``` 确保注册成功.
-
-
+然后执行 ```php demo/console.php userInfo``` 查看效果, 看看注册是否成功.
 
 ## 用 __depend 方法快速定义一阶多轮对话.
 
@@ -148,11 +154,11 @@ class UserInfo extends OOContext
     }
 ```
 
-运行 ``` php demo/console.php userInfo ``` 查看效果.
-
 从代码中可以看到, 所有的 ```Entity``` 参数都可以通过 ```$context->{$entityName} ``` 的方式获取到.
 
 ```Context::__depend``` 方法用来定义一个语境必须先通过多轮对话获取的参数. CommuneChatbot 称这些参数为 ```Entity``` . 只有这些参数都得到了, 用户才能进入一个多轮对话的 ```start``` stage.
+
+我们再运行 ```php demo/console.php userInfo``` 查看效果.
 
 
 ## 用注解的方式定义 __depend
@@ -189,8 +195,9 @@ class UserInfo extends OOContext
 
 ## 为 Entity 定义独立的 Stage
 
-我们注意到, ```Context::__depend``` 方法并没有对 ```Entity```进行校验. 如果需要校验的话, 还是需要定义一个独立的 ```Stage``` 最为合理; 可以提供独立的引导, 校验, 容错, 拒答和退出机制.
-
+我们注意到, ```Context::__depend``` 方法并没有对 ```Entity```进行校验.
+如果需要校验的话, 还是需要定义一个独立的 ```Stage``` 最为合理;
+可以提供独立的引导, 校验, 容错, 拒答和退出机制.
 
 这里我们拿 Email 参数做例子, 只需要定义与```Entity``` 同名的 ```Stage```, 就会覆盖掉默认的```Stage``` :
 
@@ -232,6 +239,5 @@ class UserInfo extends OOContext
 
 这样从代码上看, 可以一目了然的知道机器人能做哪些事情, 也符合设计机器人时的思路, 还有更好的扩展性. 后面我们会越来越多看到这样的例子.
 
-
-## [下一课 : 依赖关系的 N 阶多轮对话](/zh-cn/lesions/n-order-convo.md)
+<big>[下一节 : 依赖关系的 N 阶多轮对话](/zh-cn/lesions/n-order-convo.md)</big>
 

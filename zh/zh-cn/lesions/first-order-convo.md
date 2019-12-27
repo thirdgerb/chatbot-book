@@ -1,4 +1,4 @@
-# 第三课 : 定义一阶多轮对话
+# 第三节 : 定义一阶多轮对话
 
 如果完成一个任务需要经过多个单轮对话, 但没有嵌套其它的多轮对话, CommuneChatbot 称之为 "一阶多轮对话".
 
@@ -6,7 +6,7 @@
 
 ##  创建新的测试场景
 
-为了不和一二章的内容相混和, 我们先创建一个新的测试场景.
+为了不和一二节的内容相混和, 我们先创建一个新的测试场景.
 
 您需要先创建文件:
 
@@ -16,7 +16,6 @@
 
 ```php
 <?php
-
 
 namespace Commune\Demo;
 
@@ -75,9 +74,13 @@ class FirstOrderConvo extends OOContext
     public function __onFinal(Stage $stage) : Navigator
     {
         $name = $stage->name;
-        $stage->dialog->say()->info("到达了 $name 环节, 流程退出.");
 
-        // 结束流程.
+        // 如果是进入当前 Stage, 则执行发送消息.
+        $stage->onStart(function(Dialog $dialog) use ($name) {
+            $dialog->say()->info("到达了 $name 环节, 流程退出.");
+        });
+
+        // 结束流程
         return $stage->dialog->fulfill();
     }
 
@@ -92,7 +95,13 @@ class FirstOrderConvo extends OOContext
 在数组 'host' 中添加
 
 ```php
+
+return [
+    ...
+
     'host' => [
+        ...
+
         'rootContextName' => \Commune\Components\Demo\Contexts\DemoHome::class,
 
         // 新手教程: 添加机器人, 作为一个启动场景.
@@ -104,12 +113,17 @@ class FirstOrderConvo extends OOContext
             // 一阶多轮对话 测试用例.
             'firstOrder' => \Commune\Demo\FirstOrderConvo::class,
         ],
+
+        ...
+    ];
+];
 ```
 
 
 然后运行 ```php demo/console.php firstOrder``` 查看效果.
 
-可以看到, 机器人接受到任何信息之后, 就跳到了 ```__onFinal ``` 方法. 这个方法用 ```__on``` 做前缀来标记方法名. 而 stage 自己的名称则是 'final'.
+可以看到, 机器人接受到任何信息之后, 就跳到了 ```__onFinal ``` 方法.
+这个方法用 ```__on``` 做前缀来标记 Stage 的名称 "final".
 
 
 ## 使用 Builder 工具来简化代码.
@@ -136,7 +150,6 @@ CommuneChatbot 项目自带多种生成 callable 对象的常用工具, 都在 `
 ```
 
 然后运行 ```php demo/console.php firstOrder``` 查看效果.
-
 
 ## 定义多个 Stage
 
@@ -199,9 +212,11 @@ CommuneChatbot 项目自带多种生成 callable 对象的常用工具, 都在 `
     public function __onFinal(Stage $stage) : Navigator
     {
         $name = $stage->name;
-        $stage->dialog->say()->info("到达了 $name 环节, 流程退出.");
 
-        // 结束流程.
+        // 如果是进入当前 Stage, 则执行发送消息.
+        $stage->onStart(Talker::say()->info("到达了 $name 环节, 流程退出."));
+
+        // 结束流程
         return $stage->dialog->fulfill();
     }
 ```
@@ -214,7 +229,9 @@ CommuneChatbot 项目自带多种生成 callable 对象的常用工具, 都在 `
 
 ## 定义有分支的多轮对话
 
-在上一种多轮对话实现中, 每个 stage 都必须知道自己的下一步是什么, 而且下一步是唯一的. 而现实中的多轮对话, 往往存在各种各样的分支, 可以根据逻辑来切换.
+在上一种多轮对话实现中, 每个 stage 都必须知道自己的下一步是什么,
+而且下一步是唯一的.
+而现实中的多轮对话, 往往存在各种各样的分支, 可以根据逻辑来切换.
 
 让我们再修改一下 case, 实现一个有分支的多轮对话.
 
@@ -324,7 +341,7 @@ CommuneChatbot 项目自带多种生成 callable 对象的常用工具, 都在 `
     public function __onFinal(Stage $stage) : Navigator
     {
         $name = $stage->name;
-        $stage->dialog->say()->info("到达了 $name 环节, 流程退出.");
+        $stage->onStart(Talker::say()->info("到达了 $name 环节, 流程退出."));
 
         // 结束流程.
         return $stage->dialog->fulfill();
@@ -336,18 +353,31 @@ CommuneChatbot 项目自带多种生成 callable 对象的常用工具, 都在 `
 
 在这个示范中, 我们还引入了几个新的知识点:
 
-__Dialog::goStagePipes__ : 这个方法可以将多个 ```stage``` 组合成一个管道, 每一个 stage 只用调用 ```Dialog::next``` 方法就可以进入下一步, 而不需要知道下一步是什么. 这样就解耦了中间节点和下文.
+```Dialog::goStagePipes()```
+这个方法可以将多个 ```stage``` 组合成一个管道,
+每一个 stage 只用调用 ```Dialog::next``` 方法就可以进入下一步,
+而不需要知道下一步是什么. 这样就解耦了中间节点和下文.
 
-__askChoose__ : 机器人引导用户提供信息时, 需要通过```提问```的方式. 将提问进行封装, 可以优化各种匹配逻辑, 例如示例中用了 ```Hearing::isChoice``` 方法. 用户输入 '1', '路线1' 都会匹配到相通结果.
+```Dialog::say()->askChoose()```
+机器人引导用户最常见的方式是 "提问".
+将提问进行封装, 可以优化各种匹配逻辑,
+例如示例中用了 ```Hearing::isChoice``` 方法.
+用户输入 '1', '路线1' 都会匹配到相通结果.
 
-我们还定义了一个 ```goStep``` 方法用来复用代码. ```Context``` 作为一个类, 可以用各种方法来实现封装和解耦.
+我们还定义了一个 ```goStep()``` 方法用来复用代码.
+```Context``` 作为一个类, 可以用各种方法来实现封装和解耦.
 
 
 ## 使用链式工具 BuildTalk 来优雅地定义对话
 
-```Stage::talk() ``` 是定义单轮对话最基础的做法, 允许自己定义各种编程逻辑. 但绝大多数的 stage, 只需要发送和接受信息, 基础的做法会导致大量冗余代码.
+```Stage::talk() ``` 是定义单轮对话最基础的做法,
+允许自己定义各种编程逻辑.
+但绝大多数的 stage, 只需要发送和接受信息,
+基础的做法会导致大量冗余代码.
 
-CommuneChatbot 提供了 BuildTalk 的链式调用, 能让您非常优雅地描绘一个多轮对话. 让我们再次重构上面这个例子.
+CommuneChatbot 提供了 BuildTalk 的链式调用,
+能让您更加优雅地描绘一个多轮对话.
+让我们再次重构上面这个例子.
 
 ```php
     /**
@@ -433,7 +463,7 @@ CommuneChatbot 提供了 BuildTalk 的链式调用, 能让您非常优雅地描�
 
 ```
 
-这样是不是简洁, 优雅多了?
+这样看起来就简洁流畅多了.
 
 ```Stage::buildTalk``` 方法使用强类型约束, 有很严谨的语法结构. 详情请查看:
 
@@ -443,4 +473,4 @@ CommuneChatbot 提供了 BuildTalk 的链式调用, 能让您非常优雅地描�
 如果您有很好的 IDE 支持, 可以放心使用这种方式来定义 stage. 它反而能让您的代码更严谨.
 
 
-## [下一课 : 填槽型多轮对话](/zh-cn/lesions/slot-filling.md)
+<big>[下一节 : 填槽型多轮对话](/zh-cn/lesions/slot-filling.md)</big>

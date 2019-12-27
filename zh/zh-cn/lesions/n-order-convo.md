@@ -1,6 +1,7 @@
-# 第五课 : 依赖关系的 N 阶多轮对话
+# 第五节 : 依赖关系的 N 阶多轮对话
 
-关于复杂多轮对话问题, CommuneChatbot 项目有自己的一套解释, 您可以通过 [这篇文章](/zh-cn/core-concepts/complex-conversation.md) 了解.
+关于多轮对话相互依赖的现象, CommuneChatbot 项目有自己的一套解释, 您可以通过 [复杂多轮对话问题](/zh-cn/core-concepts/complex-conversation.md) 了解.
+具体的实现思路, 则在[多轮对话生命周期](/zh-cn/dm-lifecircle.md) 一文.
 
 简单而言, 当一个多轮对话 A 的某个节点, 嵌套了另一个多轮对话 B , 这就构成了一个 二阶多轮对话. 而 B 可以再嵌套 C, C 可以再嵌套 D ... 从而构成了 N 阶多轮对话.
 
@@ -47,10 +48,6 @@ class WelcomeUser extends OOContext
         $depending->onContext('user', 'demo.lesions.user-info');
     }
 
-    public function __exiting(Exiting $listener): void
-    {
-    }
-
     public function __onStart(Stage $stage): Navigator
     {
         return $stage->buildTalk()
@@ -69,8 +66,7 @@ class WelcomeUser extends OOContext
 ```
 
 
-> 注意, 我们这里用了 ```Depending::onContext``` 方法, 将上一课的 ```UserInfo``` 作为一个 ```Entity``` 定义成了 ```WelcomeUser``` 的依赖.
-
+> 注意, 我们这里用了 ```Depending::onContext``` 方法, 将上一节的 ```UserInfo``` 作为一个 ```Entity``` 定义成了 ```WelcomeUser``` 的依赖.
 
 然后我们把它也注册到场景中, 修改 ```BASE_PATH/src/configs/config.php```, 在 ```host``` 数组里添加:
 
@@ -107,13 +103,15 @@ class WelcomeUser extends OOContext
 
 ## 填槽型的 N 阶多轮对话
 
-上一课我们讨论过使用 ```Context::__depend``` 方法可以快速定义填槽式的任务型多轮对话.
+上一节我们讨论过使用 ```Context::__depend``` 方法可以快速定义填槽式的任务型多轮对话.
 
 而在 CommuneChatbot 中, 另一个多轮对话也可以视作一个 ```Entity```, 被其它的```Context``` 所依赖. 被依赖的```Context```还可以继续依赖其它的```Context```, 从而分形几何式地嵌套下去.
 
-因此, 仅仅使用```Context::__depend``` 的形式就可以做出一个```树状``` 的 ```N阶多轮对话```, 只不过一个槽位 (slot) 是通过另一个多轮对话来实现的. 这个依赖树理论上不限深度, 会随着对话推进, 用先序遍历的方式层层递归地回到根节点.
+因此, 仅仅使用```Context::__depend``` 的形式就可以做出一个```树状``` 的 ```N阶多轮对话```, 只不过一个槽位 (slot) 是通过另一个多轮对话来实现的.
 
-这样就构成一个依赖型的 N阶多轮对话树, 而它的递归栈在项目中称之为 ```Thread```
+这个依赖树理论上不限深度, 会随着对话推进, 用先序遍历的方式层层递归地回到根节点.
+这样就构成一个依赖型的 N阶多轮对话树,
+而它的递归栈在项目中称之为 ```Thread``` (```Commune\Chatbot\OOHost\History\Thread```).
 
 
 ## 用 Stage::dependOn 定义更灵活的依赖关系
@@ -148,10 +146,6 @@ use Commune\Chatbot\OOHost\Directing\Navigator;
 class WelcomeUser extends OOContext
 {
     public static function __depend(Depending $depending): void
-    {
-    }
-
-    public function __exiting(Exiting $listener): void
     {
     }
 
@@ -208,7 +202,6 @@ class WelcomeUser extends OOContext
 
 使用这种方式, 就可以在多轮对话的任何一个环节, 定义一个依赖关系的多轮对话嵌套了.
 
-
 ## 逃离多轮对话陷阱
 
 当用户进入一个 N 阶多轮对话后, 可能因为各种各样的原因 (不耐烦, 或者有别的事情) 希望能够中途退出来. 而机器人自己也可能要拒绝用户访问某个多轮对话. CommuneChatbot 将常见的情况总结为:
@@ -220,9 +213,9 @@ class WelcomeUser extends OOContext
 
 问题的关键不在于用何种方式退出多轮对话, 而在于退出到哪一个节点.
 
-CommuneChatbot 认为, 由__依赖关系__形成的 ```Thread```, 在任何一个```stage``` 节点尝试退出时, 应该退出整个 ```Thread```.
+CommuneChatbot 认为, 由 __依赖关系__ 形成的 ```Thread```, 在任何一个```stage``` 节点尝试退出时, 应该退出整个 ```Thread```.
 
-让我们为此写一个测试场景. 先修改上一课的类 ```UserInfo```, 我们给它新增一个方法:
+让我们为此写一个测试场景. 先修改上一节的类 ```UserInfo```, 我们给它新增一个方法:
 
 ```php
     /**
@@ -271,7 +264,61 @@ CommuneChatbot 认为, 由__依赖关系__形成的 ```Thread```, 在任何一�
 
 比如上文的例子, 我们可能希望用户只要在 ```UserInfo``` 语境中输入了名字, ```WelcomeUser``` 语境就不需要退出.
 
-这个需求可以通过 ```Context::__exiting``` 方法实现. 让我们修改 ```WelcomeUser```  类的 ```__exiting``` 方法如下:
+这个需求可以通过 ```Stage::onExiting()``` 方法实现. 让我们修改 ```WelcomeUser```  类的 ```__onAskUserInfo``` 方法如下:
+
+```php
+    /**
+     * 询问用户信息
+     * @param Stage $stage
+     * @return Navigator
+     */
+    public function __onAskUserInfo(Stage $stage) : Navigator
+    {
+        return $stage
+
+            // dependOn 的回调事件是 onIntended, 这里也测试一下
+            ->onIntended(Talker::say()->info('(拿到了dependOn的回调)'))
+
+            // 定义拦截方法
+            ->onExiting(function(Exiting $exiting) : void {
+                $exiting
+                    // 遇到 cancel 事件时
+                    ->onCancel(Talker::say()->info('askUserInfo::cancel'))
+                    // 遇到 quit 事件时
+                    ->onQuit(Talker::say()->info('askUserInfo::quit'));
+            })
+
+            // 定义 dependOn
+            ->dependOn(
+                'demo.lesions.user-info',
+
+                // 等价于 onIntended 回调事件.
+                function(Dialog $dialog, UserInfo $userInfo) : Navigator {
+
+                    // 将拿到的结果进行赋值.
+                    $this->user = $userInfo;
+
+                    // 重定向到 final
+                    return $dialog->goStage('final');
+                }
+        );
+    }
+```
+
+然后我们运行 ```php demo/console.php nOrder```, 然后在询问姓名的环节尝试输入 :
+
+* "cancel"
+* "quit"
+
+查看效果. 看看是否拦截到了相关事件.
+
+## __exiting 方法
+
+在 Context 内还可以定义通用的 exiting 拦截逻辑.
+需要定义一个名为 ```__exiting``` 的魔术方法.
+这样所有的 Stage 都共享该方法定义的退出拦截逻辑.
+
+让我们在 ```WelcomeUser``` 中添加以下方法:
 
 ```php
    /**
@@ -307,7 +354,7 @@ CommuneChatbot 认为, 由__依赖关系__形成的 ```Thread```, 在任何一�
    }
 ```
 
-然后运行 ```php demo/console.php nOrder``` , 在询问姓名时我们给出答案, 但在询问 ```email``` 时我们输入 ```"cancel"```, 以查看效果.
+然后运行 ```php demo/console.php nOrder``` , 在询问姓名时我们给出任意答案, 但在询问 "email" 时我们输入 "cancel", 以查看效果.
 
 
-## [下一课 : 不相依赖的 N 阶多轮对话](/zh-cn/lesions/n-thread-convo.md)
+<big>[下一节 : 不相依赖的 N 阶多轮对话](/zh-cn/lesions/n-thread-convo.md)</big>

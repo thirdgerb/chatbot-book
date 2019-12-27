@@ -1,16 +1,16 @@
-# 第六课 : 不相依赖的 N 阶多轮对话
+# 第六节 : 不相依赖的 N 阶多轮对话
 
-上一课我们讨论了, 多个 ```Context``` 通过 ```dependOn``` 方式嵌套, 形成依赖关系的 N 阶多轮对话. 它们在上下文中的递归栈称之为 ```Thread```. 同一个```Thread``` 遇到 ```cancel``` 等各种退出事件时, 会退出整个 ```Thread```.
+上一节我们讨论了, 多个 ```Context``` 通过 ```dependOn``` 方式嵌套, 形成依赖关系的 N 阶多轮对话. 它们在上下文中的递归栈称之为 ```Thread```. 同一个```Thread``` 遇到 ```cancel``` 等各种退出事件时, 会退出整个 ```Thread```.
 
 而实际的业务场景中, 更常出现的是不相依赖的多轮对话嵌套. 用户和机器人在讨论语境 A 的时候, 用户可能临时插入一个语境 B, 当语境 B 结束了, 需要重新返回到语境 A.
 
 如果语境 B 遇到了 ```cancel```等事件时, 也不应该影响到语境 A.
 
+在 CommuneChatbot 中, 实现语境依赖的 api 是 ```Stage::dependOn()``` 方法, 对应回调事件 ```Stage::onIntended()```.
 
-在 CommuneChatbot 中, 实现语境依赖的 api 是 ```Stage::dependOn``` 方法, 对应回调事件 ```Stage::onIntended```.
+而定义不相依赖的语境跳转, 则是用 ```Stage::sleepTo``` 方法, 对应回调事件 ```Stage::onFallback```. 具体请查看 [Stage 文档](/zh-cn/dm/stage.md).
 
-而定义不相依赖的语境跳转, 则是用 ```Stage::sleepTo``` 方法, 对应回调事件 ```Stage::onFallback```. 让我们用具体的例子看看.
-
+让我们用具体的例子看看.
 
 ## 创建 UserMenu 语境
 
@@ -54,14 +54,6 @@ class UserMenu extends OOContext
         // 最好是基础值(is_scalar), Message 对象, Context 对象
         // 它们会序列化后保存在 session 的上下文里.
         parent::__construct(get_defined_vars());
-    }
-
-    public static function __depend(Depending $depending): void
-    {
-    }
-
-    public function __exiting(Exiting $listener): void
-    {
     }
 
     public function __onStart(Stage $stage): Navigator
@@ -125,7 +117,7 @@ class UserMenu extends OOContext
 
 ## 将 UserMenu 添加到 WelcomeUser
 
-接下来, 我们要把 ```UserMenu``` 添加到上一课的 ```WelcomeUser``` 中.
+接下来, 我们要把 ```UserMenu``` 添加到上一节的 ```WelcomeUser``` 中.
 
 修改之前的 ```WelcomeUser::__onFinal``` 方法 :
 
@@ -142,6 +134,7 @@ class UserMenu extends OOContext
                 ]
             )
             ->hearing()
+            // 进入 menu stage
             ->isChoice(1, Redirector::goStage('menu'))
             ->isChoice('q', Redirector::goFulfill())
             ->end();
@@ -161,8 +154,8 @@ class UserMenu extends OOContext
             ->onFallback(Talker::say()->info('(触发了 fallback 事件)'))
 
             ->sleepTo(
-            // 和 dependOn 一样, 直接用类名, 或者 contextName, 就可以指定目标语境
-            // 不过我们这次为了示范 Context::__construct 的用法, 允许传入一个语境实例
+                // 和 dependOn 一样, 直接用类名, 或者 contextName, 就可以指定目标语境
+                // 不过我们这次为了示范 Context::__construct 的用法, 允许传入一个语境实例
                 new UserMenu($this->user),
 
                 // 回调的时候, 返回 final stage
@@ -172,14 +165,17 @@ class UserMenu extends OOContext
 
 ```
 
-我们预期的情况是, 当填写完用户信息之后, 会让我们选择输入 "1" 进入 ```UserMenu``` 语境. 而在 ```UserMenu``` 语境中, 我们如果选择了 "返回" 或者输入 "cancel", 将回到 ```WelcomeUser``` 语境的 ```final``` 阶段. 而不会连累整体退出.
+我们预期的情况是, 当填写完用户信息之后, 会让我们选择输入 "1" 进入 ```UserMenu``` 语境.
 
-在命令行输入 ```php demo/console.php nOrder``` 以测试结果.
+而在 ```UserMenu``` 语境中, 我们如果选择了 "返回" 或者输入 "cancel" 导致退出,
+将回到 ```WelcomeUser``` 语境的 ```final``` 阶段. 而不会连累整体退出.
+
+在命令行输入 ```php demo/console.php nOrder```, 进入 Menu, 输入 "cancel" 以测试结果.
 
 
 ## sleepTo 的原理
 
-上一课我们讨论过, ```Stage::dependOn``` 可以构建语境之间的依赖, 依赖关系的递归栈称之为 ```Thread```.
+上一节我们讨论过, ```Stage::dependOn``` 可以构建语境之间的依赖, 依赖关系的递归栈称之为 ```Thread```.
 
 而 ```Stage::sleepTo``` 将会用目标 ```Context``` 创建一个新的 ```Thread``` , 而当前的```Thread```则进入```sleeping```状态.
 
@@ -187,12 +183,14 @@ class UserMenu extends OOContext
 
 所以同一个会话中, 可能同时存在多个```Thread```, 一个时间只有一个```Thread```是活跃状态(```active```). 它们一起构成了会话 (```Session```) 的进程 (```Process```).
 
+更多细节请查看 [多轮对话生命周期](/zh-cn/dm-lifecircle.md).
+
 
 ## 使用 Stage::component 来简化代码
 
 CommuneChatbot 追求对多轮对话完全可编程, 在此基础上可以再封装各种工具和配置以简化代码.
 
-在前面的小课中, 我们已经见过了几种工具:
+在前面的小节中, 我们已经见过了几种工具:
 
 * Redirector : 封装了重定向的 callable
 * Talker : 用链式调生成对白的 callable
@@ -239,3 +237,5 @@ CommuneChatbot 追求对多轮对话完全可编程, 在此基础上可以再封
 在命令行输入 ```php demo/console.php nOrder``` 以测试结果.
 
 在了解了组件化的原理之后, 您也可以按自己的需要任意定义组件.
+
+<big>[下一节 : 使用意图](/zh-cn/lesions/intent.md)</big>

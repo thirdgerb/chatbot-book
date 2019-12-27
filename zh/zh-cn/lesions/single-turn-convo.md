@@ -1,19 +1,22 @@
-# 第二课 : 定义单轮对话
+# 第二节 : 定义单轮对话
 
-上一课我们定义了一个只会说 "hello world!" 的机器人, 这一课我们给它定义一些基本的回复规则.
-
+上一节我们定义了一个只会说 "hello world!" 的机器人, 这一节我们给它定义一些基本的回复规则.
 
 ##  用 Stage::talk() 定义单轮对话
 
-单轮对话的节点, 在 CommuneChatbot 中称之为 "stage" (阶段) .
+单轮对话的节点, 在 CommuneChatbot 中称之为 [Stage](/zh-cn/dm/stage.md) (阶段) .
 
-上一课的 ```public function __onStart(Stage $stage): Navigator``` 就定义了一个名为 ```start``` 的 stage.
+上一节的 ```public function __onStart(Stage $stage): Navigator``` 就定义了一个名为 ```start``` 的 Stage.
 
-通常机器人进入一个 ```stage``` 会有主动的表达, 而 "听到" 用户回复时会有一个被动的回复.
+站在单轮对话角度看,
+通常机器人会先进行主动表达, 引导用户;
+而用户回复被机器人 "听到" 时, 机器人要会有一个被动的回复.
+两个环节之间则等待用户的回复.
 
-我们可以用 ```Stage::talk``` 方式区分主动表达和被动回复.
+这样的单轮对话单元串联起来, 就形成一个多轮对话.
 
-修改 ```__onStart ``` 方法如下 :
+我们可以用 ```Stage::talk()``` 方式定义机器人的主动表达和被动回复.
+修改 ```BASE_PATH/demo/src/HelloWorld.php``` 文件的 ```__onStart ``` 方法如下 :
 
 ```php
 
@@ -25,7 +28,7 @@
     public function __onStart(Stage $stage): Navigator
     {
         return $stage->talk(
-            // 主动表表达
+            // 机器人主动表表达
             function(Dialog $dialog) : Navigator {
                 // 主动说话
                 $dialog->say()->info("请问您有什么需求?");
@@ -33,13 +36,15 @@
                 // 等待用户回复.
                 return $dialog->wait();
             },
-            // 被动回复
+
+            // 机器人被动回复
             function(Message $message, Dialog $dialog) : Navigator {
 
                 $dialog->say()->warning(
 
                     // 回复消息的模板, 用 %text% 表示变量.
                     // 底层使用了 Symfony Translator
+                    //
                     '您的回复是 %text% ',
 
                     // 定义回复模板所用的变量
@@ -68,7 +73,7 @@ PHP 的 ```callable``` 机制可以用各种形式定义一个可传递的函数
 
 *   方法名的字符串, 例如 ``` 'is_numeric' ```
 *   闭包, 例如 ``` function() {} ```
-*   实例的方法, 例如 ``` [$object, 'methodName'] ```
+*   实例的 public 方法, 例如 ``` [$object, 'methodName'] ```
 *   静态方法, 例如 ``` [ 'ClassName', 'staticMethodName'] ```
 *   拥有 ```__invoke()``` 方法的对象.
 
@@ -89,6 +94,7 @@ PHP 的 ```callable``` 机制可以用各种形式定义一个可传递的函数
         );
     }
 
+    // 使用 public 方法作为 callable 对象
     public function talkToUser(Dialog $dialog) : Navigator
     {
         // 主动说话
@@ -98,6 +104,7 @@ PHP 的 ```callable``` 机制可以用各种形式定义一个可传递的函数
         return $dialog->wait();
     }
 
+    // 使用 public 方法作为 callable 对象
     public function hearFromUser(Message $message, Dialog $dialog) : Navigator
     {
         $dialog->say()->warning(
@@ -124,7 +131,7 @@ PHP 的 ```callable``` 机制可以用各种形式定义一个可传递的函数
 
 ```Dialog``` 对象相当于 js 开发浏览器应用时用到的 ```window``` 对象, 它管理了定义对话所需的各种模块.
 
-CommuneChatbot 项目提供了一个 ```Hearing``` api, 可以方便我们使用各种规则.
+CommuneChatbot 项目提供了一个 [Hearing API](/zh-cn/dm/hearing.md), 可以方便我们使用各种规则.
 
 让我们用 ```Hearing``` 重构 ``` hearFromUser()``` 方法, 并给它添加几个额外的功能.
 
@@ -184,7 +191,7 @@ Hearing API 整合了和 NLU (自然语言处理单元) 相关的各种功能. �
 
 也许您注意到了, 在 ```Stage::talk``` 和 ```Dialog::hear``` 中传入的各种 ```callable``` 对象, 参数是不一样的. 有的有 ```Message $message```, 有的没有.
 
-这是因为所有传入的```callable``` 对象都进行了依赖注入, 可以按照您的需求, 用变量名的方式, 或者用类型约束 (typehint) 的方式, 注入各种依赖, 包括:
+这是因为所有传入的```callable``` 对象都进行了 [依赖注入](/zh-cn/dm/di.md), 可以按照您的需求, 用变量名的方式, 或者用类型约束 (typehint) 的方式, 注入各种依赖, 包括:
 
 * IoC 容器中已注册的依赖.
 * 对话过程中产生的 ```Message $message```, ```Dialog $dialog``` 和 ```Context $self```
@@ -194,7 +201,6 @@ Hearing API 整合了和 NLU (自然语言处理单元) 相关的各种功能. �
 * 自己的类名
 * 父类中的抽象类 (abstract class) 类名
 * 父类中的接口类 (interface) 类名
-
 
 如果定义了参数名```$dependencies```, 您将获得上下文相关的可注入依赖. 我们可以将这个功能做到上文的对话中:
 
@@ -217,4 +223,4 @@ Hearing API 整合了和 NLU (自然语言处理单元) 相关的各种功能. �
 然后运行 ```php demo/console.php test``` 并且输入 ```look di``` 查看效果.
 
 
-## [下一课: 定义一阶多轮对话](/zh-cn/lesions/first-order-convo.md)
+<big>[下一节: 定义一阶多轮对话](/zh-cn/lesions/first-order-convo.md)</big>

@@ -405,10 +405,40 @@ class MyIntent extends AbsCmdIntent
 
 ### 定义意图实体
 
-意图的实体 (例如 ```[北京](city)[明天](date)天气怎么样```, 意图是```queryWeather```, 实体是 ```city``` 和 ```date```),
+意图的实体 (例如 ```[长沙](city)[明天](date)天气怎么样```, 意图是```queryWeather```, 实体是 ```city``` 和 ```date```),
 通过和 Context 一样的方式来定义.
 
-具体可以查看 [Context 文档中的 "Entity 机制" 一节](/zh-cn/dm/context.md).
+具体可以查看 [Context 文档中的 "Entity 机制" 一节](/zh-cn/dm/context?id=_6-entity-机制).
+
+值得注意的是, 对于具体的意图而言, "实体" 的值可能是唯一的, 也可能是复数个值.
+NLU 作为中间件, 通常不关心这点, 而是提供实体匹配到的 "数组".
+这种差别可能导致使用时的逻辑混乱, 拿到的是数组, 用的时候以为是字符串.
+
+为此, 我们可以使用 ```Context::CASTS``` 机制来定义实体值的类型.
+
+```php
+
+class TellWeatherInt extends ActionIntent
+{
+    const DESCRIPTION = '查询天气测试用例';
+
+    ...
+
+    // 定义 casts 类型, 会自动进行各种转义
+    // 通过 $tellWeatherInt->city 拿到的都是转义后的 "string"
+    const CASTS = [
+        'city' => 'string',
+        'date' => 'string',
+    ];
+
+    ...
+}
+
+```
+
+具体可以查看 [Context 的强制类型转换](/zh-cn/dm/context?id=%e5%bc%ba%e5%88%b6%e7%b1%bb%e5%9e%8b%e8%bd%ac%e6%8d%a2)
+
+
 
 ### 消息意图
 

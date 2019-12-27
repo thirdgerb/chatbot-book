@@ -400,7 +400,7 @@ Context2 -->> Context1 : 回调(intended)
 
 最大的特点是, 依赖关系不仅接受层层回调, 而且共享中断机制. 遇到```cancel, failure, reject```等事件时, 也会冒泡式地层层回调. 任何一层如果拦截了事件, 可以自己定义重定向的 stage.
 
-## 非依赖关系构成堆结构
+## 非依赖关系构成栈结构
 
 在自然对话中, 很可能出现各种情况, 例如插入一个话题, 使得多轮对话 A 到多轮对话 B 并不是依赖关系的. 多轮对话 B 无论正常结束还是异常结束, 都需要 A 来继续话题.
 
@@ -417,7 +417,7 @@ Context2 -->> Context1 : 回调(intended)
 机器人: 请问是否要加冰 // 另一个对话结束后, 回到当前对话
 ```
 
-类似这种非依赖关系, CommuneChatbot 会建立一个由 Thread 组成的 ```sleeping```堆, 多轮对话切换时, 当前 Thread 进入 ```sleep```堆, 而新的多轮对话 Thread 会掌握控制权. 而当新的 Thread 结束时, 会从 ```sleeping```堆中唤醒最近一个 Thread 来获取控制权.
+类似这种非依赖关系, CommuneChatbot 会建立一个由 Thread 组成的 ```sleeping```栈, 多轮对话切换时, 当前 Thread 进入 ```sleep```栈, 而新的多轮对话 Thread 会掌握控制权. 而当新的 Thread 结束时, 会从 ```sleeping```栈中唤醒最近一个 Thread 来获取控制权.
 
 ```php
 
@@ -445,7 +445,7 @@ CommuneChatbot 对此有完整的实现机制, 但尚未实装. 简单而言:
 1. 当前 Thread 让出控制权, 进入```yielding```状态. 等待服务回调.
 2. 一个指定的 Thread, 或者 sleeping Thread 获得对话控制权.
 3. 当 ```yielding``` 状态的 Thread 接受到回调后, 移动到 ```Blocking```栈, 按优先级排序.
-4. 下一轮对话时, 如果 ```Blocking```栈有 Thread, 会将当前 Thread 推到 sleeping 堆中, 然后让 Blocking 的 Thread 抢占控制权.
+4. 下一轮对话时, 如果 ```Blocking```栈有 Thread, 会将当前 Thread 推到 sleeping 栈中, 然后让 Blocking 的 Thread 抢占控制权.
 5. Thread 存在优先级, Blocking Thread 优先级低则不能抢占当前对话, 避免多个任务同时回调, 不断抢占.
 
 这个功能计划在未来有实际业务场景的时候, 再在未来的版本里实装.

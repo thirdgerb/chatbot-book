@@ -192,7 +192,7 @@ CommuneChatbot 项目自带了一套 Demo 组件, 有各种各样的实现方式
 - ```Commune\Chatbot\OOHost\NLU\Contexts\CorpusManagerTask``` : 语料库管理工具
 
 
-## 2. 定义 Context
+## 2. Context 分布式工程设计
 
 上文已经介绍了, 通过实现自```Commune\Chatbot\OOHost\Context\Context```的一些基类, 我们可以创造出自己定义的多轮对话 Context.
 
@@ -202,12 +202,9 @@ CommuneChatbot 项目自带了一套 Demo 组件, 有各种各样的实现方式
 + 上下文轨迹 ( Context History )
 + 上下文记忆 ( Context Memory )
 
-
-### 2.1 分布式工程设计
-
 CommuneChatbot 实现了多轮对话系统的可分布式部署, 用户的消息请求可以落在多个服务端实例之一上, 不会产生冲突. 这也导致以上三类信息, 虽然在同一个 Context 类文件中定义, 在运行过程中却分布在不同对象中.
 
-#### 上下文逻辑
+### 上下文逻辑
 
 上下文逻辑是全局单例. 如果同时有一百个用户的多轮对话在同一个语境中, 用的也是同一套逻辑. 因此我们使用了类似函数式编程的做法, 将 Context 中定义的上下文逻辑, 以函数的形式注册到另一个对象 ContextDefinition (```Commune\Chatbot\OOHost\Context\Definition```) 中.
 
@@ -215,7 +212,7 @@ ContextDefinition 通过 "ContextName" (语境的名称) 唯一区分, 在每一
 
 这有点像是在一个分布式系统中重新实现了一遍面向对象, ContextDefinition 相当于 ```class``` 对象, 而 ContextRegistrar 相当于 ```classLoader```. 更多相关信息可以查看 [Registrar 文档](/zh-cn/dm/registrar.md).
 
-#### 上下文轨迹
+### 上下文轨迹
 
 上下文轨迹记录了上下文的位置, 切换的轨迹, 回调的目标等. 相关调度的工程模型可以查看 [多轮对话生命周期文档](/zh-cn/dm-lifecircle.md); 涉及到由 Node, Thread, Process 等构成的 History 栈结构.
 
@@ -223,7 +220,7 @@ ContextDefinition 通过 "ContextName" (语境的名称) 唯一区分, 在每一
 
 因此, 管理上下文轨迹都要通过 Dialog API 来操作. 详情可查看 ```Commune\Chatbot\OOHost\Dialogue\Dialog```, 或是 [相关文档](/zh-cn/dm/dialog.md).
 
-#### 上下文记忆
+### 上下文记忆
 
 上下文记忆是以 Context 的属性形式存在的. 在一个具体的语境中, 开发者可以完全用面向对象的方式调用和修改记忆. 例如
 
@@ -246,7 +243,7 @@ ContextDefinition 通过 "ContextName" (语境的名称) 唯一区分, 在每一
 
 ```
 
-#### 面向对象与函数式的结合
+### 面向对象与函数式的结合
 
 基于以上的分布式工程设计, Context 在定义时更偏向于面向对象, 可以用简明的面向对象类来定义一个多轮对话上下文.
 
@@ -271,7 +268,7 @@ ContextDefinition 通过 "ContextName" (语境的名称) 唯一区分, 在每一
 
 ```
 
-### 2.2 定义上下文逻辑
+## 3. 定义上下文逻辑
 
 所谓的上下文逻辑, 包含两个方面 :
 
@@ -331,7 +328,7 @@ class MyTask extends TaskDef
 至于更具体的定义方法, 请查看 [Stage 文档](/zh-cn/dm/stage.md).
 
 
-### 2.3 定义上下文轨迹
+## 4. 定义上下文轨迹
 
 一个完整的多轮对话, 可能途经了若干个封装好的上下文 (Context), 整个历史轨迹构成一个树状结构, 存储为```Commune\Chatbot\OOHost\History\Process```对象.
 
@@ -344,7 +341,7 @@ class MyTask extends TaskDef
 
 这个结构会存储为```Commune\Chatbot\OOHost\History\Node```对象.
 
-#### 定义 ContextName
+### 定义 ContextName
 
 "ContextName" 是区分不同语境的唯一ID, 是一个字符串. 默认仅允许 ```小写英文字母```, ```.```, ```-``` 三种符号.
 
@@ -399,7 +396,7 @@ class MyTask extends OOContext
     assert( $mazeInt->nameEquals('demo.maze') );
 ```
 
-#### 定义 ContextId
+### 定义 ContextId
 
 同一个 Context, 对于一百个同时访问的用户而言, 就有一百个实例. 对于同一个用户, 也可能访问了一百次. 它们都是不一样的实例.
 
@@ -411,7 +408,7 @@ CommuneChatbot 默认使用 [ramsey/uuid](http://packagist.org/packages/ramsey/u
 
 您可能注意到了, 如果修改```Context::getId()```的逻辑, 可以做到在不同会话里通过同一个ID 获取同一个 Context 的记忆, 从而实现了长程记忆. 这就是 [Memory](/zh-cn/dm/memory.md) 的实现机制.
 
-#### 定义 Context Description
+### 定义 Context Description
 
 每个 Context 定义一句话的简介, 在许多选择类的场景可以简化代码. 简介可以通过 ```$context->getDef()->getDesc()``` 获取.
 
@@ -426,11 +423,11 @@ class WelcomeUser extends OOContext
 
 ```
 
-### 2.4 定义上下文记忆
+## 5. 定义上下文记忆
 
 Context 对象在每一轮对话结束时, 都会被序列化后经由 Session 保存下来, 等待下一轮对话还原.
 
-#### Context 序列化
+### Context 序列化
 
 在序列化 Context 的时候, 只有和上下文记忆相关的一部分属性有保存的价值. 这些需要被保存的数据, 定义在```Commune\Chatbot\OOHost\Context\Context::__sleep()```方法中. 您可以通过优秀的 IDE, 方便地查看该方法指定的属性.
 
@@ -456,7 +453,7 @@ Context 对象在每一轮对话结束时, 都会被序列化后经由 Session �
 
 > 如果您要增加额外的属性, 请修改```Context::__sleep()```方法, 但要考虑序列化后的数据量, 和反序列化的一致性.
 
-#### 注册到 Session
+### 注册到 Session
 
 Context 必须要在一个 Session 之中才具备分布式存取能力, 因此单纯 ```new``` 出一个 Context 实例还是不够, 还需要通过```Context::toInstance($session)```方法注册 :
 
@@ -469,7 +466,7 @@ Context 必须要在一个 Session 之中才具备分布式存取能力, 因此�
 
 我们可以通过```Context::isInstanced()``` 判断是否已经注册, 注册后可以通过```Context::getSession()```方法从 Context 中获取 Session 实例.
 
-#### $_attributes 属性
+### $_attributes 属性
 
 记忆信息默认存储在数组```AbsContext::$_attributes```中. 可以通过魔术方法 ```__get``` 和 ```__set``` 操作.
 
@@ -489,8 +486,7 @@ $userName = $myContext->getAttribute('userName'); // 获取 $_attributes 的值,
 
 ```
 
-
-#### Context 初始化
+### Context 初始化
 
 继承自```Commune\Chatbot\OOHost\Context\AbsContext``` 的对象可以通过构造方法对上下文记忆进行初始化. 从一个 Context 跳转到另一个 Context 时, 可以进行参数的传值.
 
@@ -513,8 +509,7 @@ class OrderTask extends TaskDef
 > 注意, 构造方法传值会临时存放在 ```AbsContext::$_props```属性里, 只有在调用了```Context::toInstance($session)``` 之后才会真正存到 ```AbsContext::$_attributes``` 中.
 
 
-
-#### 记忆数据的类型
+### 记忆数据的类型
 
 考虑性能和数据的大小, 上下文记忆最好通过 PHP 基础类型 (```is_scalar```方法允许的类型, 以及 array) 定义. 使用对象作为记忆时, 要考虑序列化的成本和反序列化的一致性. 尤其要避免 __一份数据重复多次存储__.
 
@@ -550,7 +545,7 @@ class MyContext extends OOContext
 }
 ```
 
-#### 强制类型转换
+### 强制类型转换
 
 CommuneChatbot 推荐用强类型来约束代码, 提高工程质量.
 在多轮对话形式中获得的直接数据, 通常都是字符串.
@@ -589,7 +584,7 @@ abstract class AbsContext extends AbsMessage implements Context
 
 > 如果您想定义自己的 Casts 机制, 不想使用 CASTS 常量, 都可以重写 AbsContext 的相关方法: ```AbsContext::getCasts()```, ```AbsContext::cast()```, ```AbsContext::checkCast()```. 
 
-#### getter 与 setter
+### getter 与 setter
 
 遇到比 Cast 更复杂的情况下, 可以定义 getter 与 setter.
 
@@ -613,7 +608,7 @@ class MyContext extends OOContext
 }
 ```
 
-### 2.5 Entity 机制
+## 6. Entity 机制
 
 通过```AbsContext::$_attributes```属性保存的数据, 并不直接与多轮对话相关.
 而 Context 允许用 ```Entity``` 机制, 自动将一个记忆数据和一个单轮对话关联起来.
@@ -676,7 +671,7 @@ class MyContext extends OOContext
 class TellWeatherInt extends AbsCmdIntent
 {
 
-    // 定义了命令, 可以通过 "#tellWeather 北京 明天" 的命令行方式匹配到意图
+    // 定义了命令, 可以通过 "#tellWeather 长沙 明天" 的命令行方式匹配到意图
     const SIGNATURE = 'tellWeather
         {city : 请问您想查询哪个城市的天气?}
         {date : 请问您想查询哪天的天气?}
@@ -749,8 +744,7 @@ class OrderJuiceInt extends ActionIntent
 
 这种方法相比其它对话系统的填槽式的多轮对话, 还可以将任何一个 Context 映射成 Entity, 使一个多轮对话依赖另一个多轮对话的结果; 从而快速定义 N 阶多轮对话构成的任务.
 
-
-### 3. 垃圾回收
+## 7. 垃圾回收
 
 在多轮对话中, Context 会序列化后通过 Session 存储到缓存或数据库中, 等待下一轮对话还原.
 

@@ -64,7 +64,7 @@ CommuneChatbot 的多轮对话管理, 是用工程化的方式实现的, 类似�
 
 ### 1.4 关于开发者
 
-CommuneChatbot 项目由 [ThirdGerb](https://github.com/thirdgerb) 设计并开发.
+CommuneChatbot 项目由 [ThirdGerb](https://github.com/thirdgerb) 基于个人兴趣设计并开发.
 
 作者是一名服务端工程师, 对于对话交互形式的应用有很强的兴趣.
 但想要开发的应用往往卡在复杂多轮对话问题上, 而找到的解决方案还不够理想,

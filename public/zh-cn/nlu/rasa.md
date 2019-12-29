@@ -8,6 +8,12 @@ Rasa 既可以提供基于机器学习的多轮对话机器人, 也可以独立�
 
 CommuneChatbot 使用 Rasa 作为自行搭建 NLU 的样例, 以供新手作为参考.
 
+在项目中引入 package :
+
+```
+composer require commune/compnt-rasa
+```
+
 ## 安装 Rasa
 
 安装 Rasa 可以先查阅 [官方文档](https://rasa.com/zh-cn/rasa/user-guide/installation/), 网上也有许多安装的教程. 这里就不赘述了.
@@ -177,99 +183,6 @@ CommuneChatbot 是工程化的开发框架, 目标是跨平台的对话交互中
 
 1. CommuneChatbot 的多轮对话基于规则来定义, 而非标注语料.
 1. 定义了 [Message 体系](/zh-cn/engineer/messages.md), 消息不局限于文字
-1. CommuneChatbot 可以实现复杂多轮对话.
+1. CommuneChatbot 的重点是实现复杂多轮对话.
 
-现阶段, 在功能性的场景中, 用规则来定义多轮对话, 其实比机器学习的方法更有效和准确. 例如在 RasaX 中生产多轮对话语料, 看起来是这样的 :
-
-定义 Domain 文件:
-
-```
-intents:
-  - greet
-  - goodbye
-  - affirm
-  - deny
-  - mood_great
-  - mood_unhappy
-  - bot_challenge
-
-actions:
-- utter_greet
-- utter_cheer_up
-- utter_did_that_help
-- utter_happy
-- utter_goodbye
-- utter_iamabot
-
-templates:
-  utter_greet:
-  - text: "Hey! How are you?"
-
-  utter_cheer_up:
-  - text: "Here is something to cheer you up:"
-    image: "https://i.imgur.com/nGF1K8f.jpg"
-
-  utter_did_that_help:
-  - text: "Did that help you?"
-
-  utter_happy:
-  - text: "Great, carry on!"
-
-  utter_goodbye:
-  - text: "Bye"
-
-  utter_iamabot:
-  - text: "I am a bot, powered by Rasa."
-
-session_config:
-  session_expiration_time: 60
-  carry_over_slots_to_new_session: true
-```
-
-然后是 stories 文件, 提供基于 domain 的多轮对话的语料 :
-
-```
-## first story
-* greet
-   - action_ask_user_question
-> check_asked_question
-
-## user affirms question
-> check_asked_question
-* affirm
-  - action_handle_affirmation
-> check_handled_affirmation
-
-## user denies question
-> check_asked_question
-* deny
-  - action_handle_denial
-> check_handled_denial
-
-## user leaves
-> check_handled_denial
-> check_handled_affirmation
-* goodbye
-  - utter_goodbye
-
-## greet + location/price + cuisine + num people    <!-- name of the story - just for debugging -->
-* greet
-   - action_ask_howcanhelp
-* inform{"location": "rome", "price": "cheap"}  <!-- user utterance, in format intent{entities} -->
-   - action_on_it
-   - action_ask_cuisine
-* inform{"cuisine": "spanish"}
-   - action_ask_numpeople        <!-- action that the bot should execute -->
-* inform{"people": "six"}
-   - action_ack_dosearch
-```
-
-这种做法, 已经接近于 __用配置文件编写多轮对话规则__ , 需要生产的语料有可能比定义规则还要多 (考虑到 分支/循环/嵌套 的存在, 编写 stories 可能要手动穷举).
-
-然而由于这是 __基于配置__ 编写的, 在响应能力上反而不如 __完全可编程__ 的规则引擎.
-因为配置本来就是编程语言的子集.
-具体到业务逻辑上, Rasa 还是要编写大量的 Action, 但可能无法专注于工程便利性.
-
-最后, [多轮对话生命周期](/zh-cn/dm-lifecircle.md) 中讨论的一些多轮对话特性, RasaX 暂时还不能实现.
-
-作者的观点是, 在功能性的对话机器人场景中, 机器学习的解决方案还有很大提升空间, 使用工程化框架是一个现实的解决方案.
+在具体应用场景中使用哪一种方案更合适, 还请开发者自己判断.

@@ -418,7 +418,7 @@ Question 会像其它```Commune\Chatbot\Blueprint\Message\ReplyMsg``` 一样, �
 
 最简单的方式, 是用 ```[1] 选项1``` 的方式, 用字符串来表示选项. 例如微信公众号.
 
-但在支持触屏, 点击的客户端, 选项通常会渲染成按钮. 例如 https://communechatbot.com
+但在支持触屏, 点击的客户端, 选项通常会渲染成按钮. 例如<https://communechatbot.com>
 
 在有触屏的智能音箱中, 带选项的消息会被渲染成有按钮的 Card.
 

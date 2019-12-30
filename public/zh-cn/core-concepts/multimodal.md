@@ -107,7 +107,7 @@ ABC模态服务端 ->> ABC模态客户端 : 解析并下发客户端指令
 
 使用 CommuneChatbot 搭建多模态机器人, 理论上是可行的.
 
-现在的官网 https://communechatbot.com 就提供了一个简单的 Demo 示范.
+现在的官网<https://communechatbot.com> 就提供了一个简单的 Demo 示范.
 
 在网站通过 __对话界面__ 与 Web 机器人对话, 每次都会将对话状态变更 (contextName, stage) 下发给浏览器. 浏览器通过 Vue 开发的前端客户端会更新本地状态, 同时从 API 机器人拉取新的对话源码.
 

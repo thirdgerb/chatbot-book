@@ -6,4 +6,4 @@
 * [commune/studio-hyperf](https://github.com/thirdgerb/studio-hyperf) : 基于 [hyperf](https://github.com/hyperf/hyperf) 实现的对话机器人工作站
 
 
-手册使用网页文档项目 [docsify](https://docsify.js.org/) 生成网页版, 相关代码在 public 目录下. 文档网站的地址在 https://communechatbot.com/docs
+手册使用网页文档项目 [docsify](https://docsify.js.org/) 生成网页版, 相关代码在 public 目录下. 文档网站的地址在<https://communechatbot.com/docs>

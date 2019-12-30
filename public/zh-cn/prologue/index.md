@@ -23,13 +23,100 @@
 
 如有兴趣, 可以加入讨论 QQ 群: 907985715
 
-### 1.1 项目构成
+## 2. 关于
+
+用 CommuneChatbot 开发多轮对话, 一个简单的示例如下 :
+
+```php
+/**
+ * 定义一个 Hello worl 的上下文
+ * @property string $name userName
+ */
+class HelloWorldContext extends OOContext
+{
+    // 上下文的介绍
+    const DESCRIPTION = 'hello world!';
+
+    // 对话单元 "start"
+    public function __onStart(Stage $stage) : Navigator
+    {
+        return $stage->buildTalk()
+
+            // 发送消息给用户
+            ->info('hello world!!')
+
+            // 进入 "askName" 对话单元
+            ->goStage('askName')
+    }
+
+    // 对话单元 "askName"
+    public function __onAskName(Stage $stage) : Navigator
+    {
+        return $stage->buildTalk()
+
+            // 询问用户姓名
+            ->askVerbal('How may I address you?')
+
+            // 等待用户的消息
+            ->hearing()
+
+            // 接受到用户的消息, 符合答案的格式
+            ->isAnswer(function(Answer $answer, Dialog $dialog) {
+
+                // 将答案赋值给上下文记忆
+                $this->name = $answer->toResult();
+
+                // 进入对话单元 "menu"
+                return $this->goStage('menu');
+            })
+
+            // 结束用 Hearing API 定义对话逻辑
+            ->end();
+    }
+
+    // 对话单元 "menu"
+    public function __onMenu(Stage $stage) : Navigator
+    {
+        // 用 "menu" 工具构建一个 对话单元组件
+        $menu = new Menu(
+            // 菜单向用户的提问
+            'What can I help you?',
+
+            // 给用户回答的建议
+            [
+                // 进入 "play game" 的上下文
+                PlayGameContext::class,
+
+                // 进入 "order drink" 的上下文
+                OrderDrinkContext::class,
+
+                // 进入 "simple chat" 的上下文
+                SimpleChatContext::class,
+            ]
+        );
+
+        return $stage
+
+            // 当目标上下文结束后, 触发这个回调方法
+            ->onFallback(function(Dialog $dialog) {
+                // 重复当前 Menu 对话
+                return $dialog->repeat();
+            });
+
+            // 加载 stage component
+            ->component($menu);
+    }
+}
+```
+
+### 2.1 项目构成
 
 -   [Chatbot](https://github.com/thirdgerb/chatbot) : 核心框架
--   [Studio](https://github.com/thirdgerb/studio-hyperf) : 工作站, 基于 swoole + hyperf 开发, 可创建和运行应用
+-   [Studio](https://github.com/thirdgerb/studio-hyperf) : 工作站, 基于 swoole + hyperf 开发, 可创建和运行服务端
+-   [Chatbot-book](https://github.com/thirdgerb/chatbot-book) : 开发手册源码
 -   [Components](/zh-cn/components/index.md) : 高度组件化 + 配置化地实现各种多轮对话功能
 
-### 1.2 项目定位与特点
+### 2.2 定位与特点
 
 [对话机器人的技术架构](/zh-cn/core-concepts/structure.md) 这篇文章提到了现阶段对话机器人可能涉及到的技术领域.
 
@@ -47,7 +134,7 @@
 
 至于本项目为什么用规则编程, 而不是机器学习的方式实现多轮对话管理, 可以通过 [工程化还是机器学习](/zh-cn/core-concepts/engineering-or-machine-learning.md) 了解作者的观点.
 
-### 1.3 同类项目
+### 2.3 同类项目
 
 CommuneChatbot 的多轮对话管理, 是用工程化的方式实现的, 类似传统的应用开发. 与此相似的开源项目有:
 
@@ -58,11 +145,12 @@ CommuneChatbot 的多轮对话管理, 是用工程化的方式实现的, 类似�
 [CommuneChatbot](https://github.com/thirdgerb/chatbot) 目前是一个新生项目, 和以上项目比较虽不够成熟, 但有两个方向上的主要特点:
 
 * 致力于实现 [复杂的 N 阶多轮对话](/zh-cn/core-concepts/complex-conversation.md)
-* 有更多面向生产环境的工程设计
+* 许多面向生产环境的工程设计
+* 可以分布式部署, 在无状态请求中还原上下文状态
 
 还有一些使用机器学习实现多轮对话管理的开源项目, 例如 [chatterbot](https://github.com/gunthercox/ChatterBot) 和 [rasa x](https://rasa.com/zh-cn/rasa-x/). 供读者参考.
 
-### 1.4 关于开发者
+### 2.4 关于开发者
 
 CommuneChatbot 项目由 [ThirdGerb](https://github.com/thirdgerb) 基于个人兴趣设计并开发.
 
@@ -75,7 +163,7 @@ CommuneChatbot 项目由 [ThirdGerb](https://github.com/thirdgerb) 基于个人�
 若感觉有所共鸣, 也希望不吝褒扬, 给予鼓励.
 
 
-## 2. 主要依赖项目
+## 3. 主要依赖项目
 
 - 核心依赖
     -   [swoole](https://www.swoole.com/) : PHP扩展, 用于实现高性能的协程服务端
@@ -89,7 +177,7 @@ CommuneChatbot 项目由 [ThirdGerb](https://github.com/thirdgerb) 基于个人�
 
 CommuneChatbot 的其它依赖, 详见仓库里的 ```composer.json``` 文件和 ```package.json``` 文件.
 
-## 3. 您可能需要
+## 4. 您可能需要
 
 - [快速教程 ★](/zh-cn/lesions/index.md)
     * [1. hello world](/zh-cn/lesions/helloworld.md)

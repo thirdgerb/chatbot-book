@@ -29,7 +29,7 @@
 
 ```php
 /**
- * 定义一个 Hello worl 的上下文
+ * 定义一个 Hello world 的上下文
  * @property string $name userName
  */
 class HelloWorldContext extends OOContext
@@ -158,7 +158,7 @@ CommuneChatbot 项目由 [ThirdGerb](https://github.com/thirdgerb) 基于个人�
 但想要开发的应用往往卡在复杂多轮对话问题上, 而找到的解决方案还不够理想,
 因此自己动手开发了这个项目.
 
-作者关于对话机器人的各种思考和观点, 仅供参考.
+作者关于对话机器人的各种思考和观点, 谨供参考.
 如果发现错谬之处, 烦请批评指教, 非常感谢!
 若感觉有所共鸣, 也希望不吝褒扬, 给予鼓励.
 
